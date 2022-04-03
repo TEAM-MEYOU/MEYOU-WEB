@@ -14,9 +14,3 @@ a {
 * {
     box-sizing: border-box;
 }
-
-@font-face {
-    font-family: "Nanum Pen Script", cursive;
-    src: url("/public/fonts/NanumPenScript-Regular.ttf");
-    font-weight: 400;
-}
