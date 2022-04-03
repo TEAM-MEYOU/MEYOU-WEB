@@ -3,7 +3,7 @@ body {
     padding: 0;
     margin: 0;
     font-size: 62.5%;
-    font-family: -apple-system, "Nanum Pen Script", sans-serif;
+    font-family: "Nanum Pen Script", -apple-system, sans-serif;
 }
 
 a {
@@ -13,4 +13,10 @@ a {
 
 * {
     box-sizing: border-box;
+}
+
+@font-face {
+    font-family: "Nanum Pen Script", cursive;
+    src: url("/public/fonts/NanumPenScript-Regular.ttf");
+    font-weight: 400;
 }
