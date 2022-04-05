@@ -8,6 +8,7 @@ function Layout({ children }: { children: ReactNode }) {
     <Container>
       <div
         css={css`
+          position: relative;
           width: 100%;
           max-width: 76.8rem;
           display: flex;
@@ -30,6 +31,7 @@ const Container = styled.div`
   margin: 0;
   min-height: 100vh;
   height: auto;
+  background-color: ${colors.grey50};
 `;
 
 export default Layout;

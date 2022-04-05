@@ -6,7 +6,7 @@ import colors from '@constants/colors';
 import Button from '@components/Button';
 import { useRouter } from 'next/router';
 
-const Home: NextPage = () => {
+const Index: NextPage = () => {
   const router = useRouter();
 
   const handleClickKaKaoLogin = () => {
@@ -53,4 +53,4 @@ const Image = styled.img`
   margin-top: 150px;
 `;
 
-export default Home;
+export default Index;
