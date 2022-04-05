@@ -14,6 +14,9 @@ function Text<Element extends keyof JSX.IntrinsicElements = 'span'>(props: TextP
     <span
       css={css`
         display: inline-block;
+        font-size: 2rem;
+        white-space: pre-line;
+        word-break: keep-all;
       `}
       className={className}
       style={{ ...style }}>
