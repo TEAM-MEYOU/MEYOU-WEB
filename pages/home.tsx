@@ -1,4 +1,4 @@
-import { GetServerSideProps, NextPage } from 'next';
+import { NextPage } from 'next';
 import Container from '@components/Container';
 import { css } from '@emotion/react';
 import Text from '@components/Text';
@@ -66,12 +66,6 @@ const Home: NextPage = () => {
       </ColumnList>
     </>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  return {
-    props: {},
-  };
 };
 
 export default Home;
