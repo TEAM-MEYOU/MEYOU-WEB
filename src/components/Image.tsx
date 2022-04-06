@@ -24,6 +24,8 @@ function Image(props: Props) {
         objectFit={'cover'}
         alt={alt}
         layout={'fixed'}
+        priority={true}
+        quality={85}
       />
     </span>
   );
