@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import colors from '@constants/colors';
 import { ReactNode } from 'react';
+import Image from '@components/Image';
 
 function DiaryLog() {
   return (
@@ -44,11 +45,32 @@ interface Props {
 function DiaryLogItem({ emotion, children }: Props) {
   return (
     <Item>
-      <ProfileImage src={'/icons/profile_mock_img_2.jpeg'} />
+      <Image width={50} height={50} src={'/icons/profile_mock_img_1.jpeg'} alt={'프로필 이미지'} />
       {emotion ? (
-        <EmotionImage src={`/icons/emotions/${emotion}.png`} />
+        <Image
+          css={css`
+            position: absolute;
+            left: 3.5rem;
+            bottom: -0.6rem;
+          `}
+          width={25}
+          height={25}
+          src={`/icons/emotions/${emotion}.png`}
+          alt={'감정 아이콘'}
+        />
       ) : (
-        <NoEmotionImage src={'/icons/ask_icon.png'} />
+        <Image
+          css={css`
+            position: absolute;
+            left: 4.5rem;
+            top: -2rem;
+          `}
+          width={30}
+          height={30}
+          src={'/icons/ask_icon.png'}
+          alt={'미작성 아이콘'}
+          radius={'0'}
+        />
       )}
 
       {children ? (
@@ -82,27 +104,4 @@ const Item = styled.div`
   display: flex;
   align-items: center;
   margin-top: 45px;
-`;
-
-const ProfileImage = styled.img`
-  width: 5rem;
-  height: 5rem;
-  border-radius: 50%;
-  object-fit: cover;
-`;
-
-const EmotionImage = styled.img`
-  position: absolute;
-  left: 3.5rem;
-  bottom: -0.6rem;
-  width: 2.5rem;
-  height: 2.5rem;
-`;
-
-const NoEmotionImage = styled.img`
-  position: absolute;
-  left: 4.5rem;
-  top: -2rem;
-  width: 3rem;
-  height: 3rem;
 `;
