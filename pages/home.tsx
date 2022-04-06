@@ -1,11 +1,11 @@
 import { GetServerSideProps, NextPage } from 'next';
 import Container from '@components/Container';
 import { css } from '@emotion/react';
-import styled from '@emotion/styled';
 import Text from '@components/Text';
 import colors from '@constants/colors';
 import DiaryLog from '@components/DiaryLog';
 import ColumnList from '@components/ColumnList';
+import Image from '@components/Image';
 
 const Home: NextPage = () => {
   return (
@@ -17,8 +17,26 @@ const Home: NextPage = () => {
           align-items: center;
           margin-top: 10px;
         `}>
-        <LeftProfileImage src={'/icons/profile_mock_img_1.jpeg'} alt={'프로필 이미지'} />
-        <RightProfileImage src={'/icons/profile_mock_img_2.jpeg'} alt={'프로필 이미지'} />
+        <Image
+          css={css`
+            position: absolute;
+            left: 10px;
+          `}
+          width={60}
+          height={60}
+          src={'/icons/profile_mock_img_1.jpeg'}
+          alt={'프로필이미지'}
+        />
+        <Image
+          css={css`
+            position: absolute;
+            right: 10px;
+          `}
+          width={60}
+          height={60}
+          src={'/icons/profile_mock_img_2.jpeg'}
+          alt={'프로필이미지'}
+        />
         <Text
           css={css`
             font-size: 3rem;
@@ -49,24 +67,6 @@ const Home: NextPage = () => {
     </>
   );
 };
-
-const LeftProfileImage = styled.img`
-  position: absolute;
-  left: 10px;
-  width: 6rem;
-  height: 6rem;
-  border-radius: 50%;
-  object-fit: cover;
-`;
-
-const RightProfileImage = styled.img`
-  position: absolute;
-  right: 10px;
-  width: 6rem;
-  height: 6rem;
-  border-radius: 50%;
-  object-fit: cover;
-`;
 
 export const getServerSideProps: GetServerSideProps = async () => {
   return {
