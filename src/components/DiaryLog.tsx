@@ -42,7 +42,7 @@ interface Props {
   children?: ReactNode;
 }
 
-function DiaryLogItem({ emotion, children }: Props) {
+export function DiaryLogItem({ emotion, children }: Props) {
   return (
     <Item>
       <Image width={50} height={50} src={'/icons/profile_mock_img_1.jpeg'} alt={'프로필 이미지'} />

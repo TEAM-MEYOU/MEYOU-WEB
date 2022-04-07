@@ -129,7 +129,7 @@ const colors = {
   content200: '#FF7272',
   content300: '#E15C5C',
   button100: '#FF6F6F',
-  button200: '#ff5f5f',
+  button200: '#f55757',
 };
 
 export default colors;

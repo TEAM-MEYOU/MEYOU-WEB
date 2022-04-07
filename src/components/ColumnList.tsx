@@ -15,7 +15,7 @@ const ColumnList = ({ classname, children }: Props) => {
         flex-direction: column;
         align-items: center;
         width: 100%;
-        padding: 30px 0 60px;
+        padding: 30px 0 0 0;
       `}>
       {children}
     </ul>
