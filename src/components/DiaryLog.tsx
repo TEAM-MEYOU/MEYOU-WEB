@@ -14,7 +14,7 @@ function DiaryLog() {
       `}>
       <Text
         css={css`
-          font-size: 2.5rem;
+          font-size: 2.6rem;
         `}>
         오늘
       </Text>
