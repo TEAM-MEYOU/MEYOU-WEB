@@ -15,7 +15,6 @@ const Home: NextPage = () => {
           display: flex;
           flex-direction: column;
           align-items: center;
-          margin-top: 10px;
         `}>
         <Image
           css={css`

@@ -1,5 +1,6 @@
 import NextImage from 'next/image';
 import { css } from '@emotion/react';
+import { ComponentProps } from 'react';
 
 interface Props {
   className?: string;
@@ -10,10 +11,10 @@ interface Props {
   alt: string;
 }
 
-function Image(props: Props) {
-  const { className, width, height, src, radius = '50%', alt } = props;
+function Image(props: Props & ComponentProps<'span'>) {
+  const { className, width, height, src, radius = '50%', alt, onClick } = props;
   return (
-    <span className={className} css={css``}>
+    <span className={className} onClick={onClick}>
       <NextImage
         css={css`
           border-radius: ${radius};

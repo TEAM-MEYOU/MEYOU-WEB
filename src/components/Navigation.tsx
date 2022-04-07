@@ -47,7 +47,7 @@ interface Props {
 
 function NavLink({ href }: Props) {
   const router = useRouter();
-  const isCurrentPage = href === router.asPath;
+  const isCurrentPage = href === '/' + router.asPath.split('/')[1];
   return (
     <LinkContainer onClick={() => router.push(href)}>
       <Icon src={isCurrentPage ? `/icons${href}_active.png` : `/icons${href}.png`} />

@@ -15,6 +15,8 @@ function Layout({ children }: { children: ReactNode }) {
           flex-direction: column;
           align-items: center;
           background-color: ${colors.background};
+          padding-top: 1rem;
+          padding-bottom: 6rem;
         `}>
         {children}
       </div>
