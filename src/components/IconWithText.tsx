@@ -9,16 +9,20 @@ interface Props {
   className?: string;
   children: ReactNode;
   textMargin?: string;
+  container?: boolean;
 }
 
-function IconWithText({ src, className, children, textMargin = '1.5rem' }: Props) {
+function IconWithText({ src, className, children, textMargin = '1.5rem', container = true }: Props) {
   return (
     <Container
       className={className}
       css={css`
         display: flex;
         align-items: center;
-        margin-top: 15px;
+        margin-top: ${container ? '15px' : '0'};
+        background-color: ${container ? '' : 'transparent'};
+        box-shadow: ${container ? '' : 'none'};
+        padding: ${container ? '' : '0'};
       `}>
       <Image radius={'0'} width={30} height={30} src={src} alt={'코인 아이콘'} />
       <Text

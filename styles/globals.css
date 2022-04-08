@@ -25,3 +25,9 @@ li {
     margin: 0;
     padding: 0;
 }
+
+button {
+    padding: 0;
+    border: none;
+    background-color: transparent;
+}
