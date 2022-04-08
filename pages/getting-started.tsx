@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 const GettingStarted: NextPage = () => {
   const [id, setId] = useState('');
   const handleClickLinkShare = async () => {
-    const url = `http://localhost:3000/connection?id=${id}`;
+    const url = `https://meyou-web.vercel.app/connection?id=${id}`;
     if (typeof navigator.share !== 'undefined') {
       try {
         await navigator.share({
