@@ -130,6 +130,7 @@ const colors = {
   content300: '#E15C5C',
   button100: '#FF6F6F',
   button200: '#f55757',
+  boxShadow: '0 2px 10px -2px rgba(0, 0, 0, 0.06), 0 0 1px 0 rgba(0, 0, 0, 0.28)',
 };
 
 export default colors;
