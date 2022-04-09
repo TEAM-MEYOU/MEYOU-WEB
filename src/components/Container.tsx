@@ -17,7 +17,7 @@ function Container({ children, className }: Props) {
         height: auto;
         padding: 20px;
         border-radius: 12px;
-        box-shadow: 0 2px 10px -2px rgba(0, 0, 0, 0.06), 0 0 1px 0 rgba(0, 0, 0, 0.28);
+        box-shadow: ${colors.boxShadow};
       `}
       className={className}>
       {children}

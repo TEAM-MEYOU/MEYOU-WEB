@@ -16,6 +16,7 @@ class MyDocument extends Document {
           <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet" />
         </Head>
         <body>
+          <div id={'global-portal'}></div>
           <Main />
           <NextScript />
         </body>

@@ -6,9 +6,14 @@ import { css } from '@emotion/react';
 import IconWithText from '@components/IconWithText';
 import Button from '@components/Button';
 import { useEffect, useState } from 'react';
+import Modal from '@components/Modal';
+import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
 
 const GettingStarted: NextPage = () => {
   const [id, setId] = useState('');
+  const [modal, setModal] = useState(false);
+  const router = useRouter();
   const handleClickLinkShare = async () => {
     const url = `https://meyou-web.vercel.app/connection?id=${id}`;
     if (typeof navigator.share !== 'undefined') {
@@ -41,6 +46,12 @@ const GettingStarted: NextPage = () => {
   useEffect(() => {
     setId(window.localStorage.getItem('id') as string);
   }, []);
+  const handleClickInput = () => {
+    setModal(true);
+  };
+  const handleClickConnect = () => {
+    router.push('/home');
+  };
 
   return (
     <>
@@ -83,7 +94,7 @@ const GettingStarted: NextPage = () => {
           내ID 복사하기
         </IconWithText>
       </Button>
-      <Button iconButton={true}>
+      <Button iconButton={true} onClick={handleClickInput}>
         <IconWithText
           css={css`
             cursor: pointer;
@@ -92,7 +103,26 @@ const GettingStarted: NextPage = () => {
           상대ID 입력하기
         </IconWithText>
       </Button>
+      {modal && (
+        <Modal onClose={() => setModal(false)}>
+          <IconWithText container={false} src={'/icons/code.png'}>
+            상대방ID 입력하기
+          </IconWithText>
+          <CodeInput autoFocus={true} />
+          <Button onClick={handleClickConnect}>연결하기</Button>
+        </Modal>
+      )}
     </>
   );
 };
+
+const CodeInput = styled.input`
+  width: 100%;
+  margin: 10px 0;
+  font-size: 3.5rem;
+  padding: 10px;
+  outline: none;
+  border: none;
+`;
+
 export default GettingStarted;
