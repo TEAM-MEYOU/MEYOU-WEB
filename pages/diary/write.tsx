@@ -126,8 +126,8 @@ const EmotionImage = ({ emotion, selectedEmotion = emotion, onClick }: Props & C
     <Image
       css={css`
         display: inline-block;
-        width: 50px;
-        height: 50px;
+        width: 30px;
+        height: 30px;
         border-radius: 1.2rem;
         background-color: ${emotion === selectedEmotion ? colors.content200 : colors.background};
         padding: 10px;

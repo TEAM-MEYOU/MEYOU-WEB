@@ -14,7 +14,16 @@ interface Props {
 function Image(props: Props & ComponentProps<'span'>) {
   const { className, width, height, src, radius = '50%', alt, onClick } = props;
   return (
-    <span className={className} onClick={onClick}>
+    <span
+      className={className}
+      css={css`
+        display: inline-block;
+        width: ${width}px;
+        height: ${height}px;
+        border-radius: ${radius};
+        box-sizing: content-box;
+      `}
+      onClick={onClick}>
       <NextImage
         css={css`
           border-radius: ${radius};

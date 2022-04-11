@@ -59,9 +59,9 @@ const Home: NextPage = () => {
         </Text>
       </Container>
       <ColumnList>
-        <DiaryLog />
-        <DiaryLog />
-        <DiaryLog />
+        <DiaryLog date={{ year: 2022, month: 4, day: 11 }} />
+        <DiaryLog date={{ year: 2022, month: 4, day: 10 }} />
+        <DiaryLog date={{ year: 2022, month: 4, day: 9 }} />
       </ColumnList>
     </>
   );

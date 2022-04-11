@@ -6,7 +6,32 @@ import colors from '@constants/colors';
 import { ReactNode } from 'react';
 import Image from '@components/Image';
 
-function DiaryLog() {
+export interface DiaryDate {
+  year: number;
+  month: number;
+  day: number;
+}
+
+interface Props {
+  date: DiaryDate;
+}
+
+function DiaryLog({ date }: Props) {
+  const DiaryDateText = () => {
+    const currentDate = new Date();
+    if (
+      currentDate.getFullYear() === date.year &&
+      currentDate.getMonth() === date.month - 1 &&
+      currentDate.getDate() === date.day
+    ) {
+      return '오늘';
+    } else {
+      return currentDate.getFullYear() !== date.year
+        ? `${date.year}년 ${date.month}월 ${date.day}일`
+        : `${date.month}월 ${date.day}일`;
+    }
+  };
+
   return (
     <Container
       css={css`
@@ -16,7 +41,7 @@ function DiaryLog() {
         css={css`
           font-size: 2.6rem;
         `}>
-        오늘
+        {DiaryDateText()}
       </Text>
       <DiaryLogItem />
       <DiaryLogItem emotion={'love'}>
@@ -37,12 +62,12 @@ export const Emotion = {
 
 export type EmotionValue = typeof Emotion[keyof typeof Emotion];
 
-interface Props {
+interface DiaryLogItemProps {
   emotion?: EmotionValue;
   children?: ReactNode;
 }
 
-export function DiaryLogItem({ emotion, children }: Props) {
+export function DiaryLogItem({ emotion, children }: DiaryLogItemProps) {
   return (
     <Item>
       <Image width={50} height={50} src={'/icons/profile_mock_img_1.jpeg'} alt={'프로필 이미지'} />
