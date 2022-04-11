@@ -14,7 +14,7 @@ function Navigation() {
             <NavLink href={'/diary'} />
             <NavLink href={'/chart'} />
             <NavLink href={'/game'} />
-            <NavLink href={'/option'} />
+            <NavLink href={'/setting'} />
           </Nav>
         </NavContainer>
       ) : (

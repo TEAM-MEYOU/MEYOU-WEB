@@ -5,9 +5,10 @@ import { ReactNode } from 'react';
 interface Props {
   className?: string;
   children: ReactNode;
+  onClick?: () => void;
 }
 
-function Container({ children, className }: Props) {
+function Container({ children, className, onClick }: Props) {
   return (
     <div
       css={css`
@@ -19,7 +20,8 @@ function Container({ children, className }: Props) {
         border-radius: 12px;
         box-shadow: ${colors.boxShadow};
       `}
-      className={className}>
+      className={className}
+      onClick={onClick}>
       {children}
     </div>
   );
