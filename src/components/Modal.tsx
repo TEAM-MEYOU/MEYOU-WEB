@@ -2,19 +2,23 @@ import GlobalPortal from '../GlobalPortal';
 import { ReactNode, useEffect, useRef } from 'react';
 import styled from '@emotion/styled';
 import colors from '@constants/colors';
+import Header from '@components/Header';
 
 interface Props {
   children: ReactNode;
-  onClose: () => void;
+  onClose?: () => void;
+  title?: string;
 }
 
-function Modal({ children, onClose }: Props) {
+function Modal({ children, onClose, title }: Props) {
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent): void {
       if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-        onClose();
+        /* 잠시 disable
+        onClose && onClose();
+         */
       }
     }
 
@@ -27,7 +31,10 @@ function Modal({ children, onClose }: Props) {
   return (
     <GlobalPortal>
       <ModalContainer>
-        <ModalBox ref={modalRef}>{children}</ModalBox>
+        <ModalBox ref={modalRef}>
+          <Header onClick={onClose}>{title}</Header>
+          {children}
+        </ModalBox>
       </ModalContainer>
     </GlobalPortal>
   );
