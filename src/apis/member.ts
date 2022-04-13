@@ -53,3 +53,13 @@ export const updateMember = async (member: Partial<Member>) => {
   const response = await axios.put(API_URL, member);
   return response.data;
 };
+
+/**
+ * ProfileImage Update API
+ * @param id
+ * @param url
+ */
+export const updateProfileImage = async (id: number, url: string) => {
+  const response = await axios.get(`${API_URL}/profile?memberId=${id}&imageUrl=${url}`);
+  return response.data;
+};
