@@ -18,6 +18,7 @@
           "./src"
         ],
         "alias": {
+          "@apis": "./src/apis",
           "@constants": "./src/constants",
           "@stores": "./src/stores",
           "@utils": "./src/utils",

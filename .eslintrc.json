@@ -20,6 +20,7 @@
     "plugin:prettier/recommended"
   ],
   "rules": {
-    "@next/next/no-img-element": "off"
+    "@next/next/no-img-element": "off",
+    "@typescript-eslint/no-non-null-assertion": "off"
   }
 }
