@@ -5,6 +5,9 @@ import { css } from '@emotion/react';
 import colors from '@constants/colors';
 import Script from 'next/script';
 import { useRouter } from 'next/router';
+import { checkMember, getMember, Member, registerMember, RegisterMember } from '@apis/member';
+import { useEffect } from 'react';
+import { useQueryClient } from 'react-query';
 
 interface login {
   access_token: string;
@@ -17,7 +20,7 @@ interface login {
 
 interface kakaoInfo {
   connected_at: string;
-  id: number;
+  id: string;
   kakao_account: {
     email: string;
     email_needs_agreement: boolean;
@@ -29,6 +32,17 @@ interface kakaoInfo {
 
 const Index: NextPage = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
+
+  const onLoginSuccess = (member: Member) => {
+    window.localStorage.setItem('kakao', member.kakao);
+    queryClient.setQueryData('user', member);
+    if (!member.coupleId) {
+      router.push('/getting-started');
+    } else {
+      router.push('/home');
+    }
+  };
 
   const handleClickKaKaoLogin = () => {
     const kakao = (window as any).Kakao;
@@ -45,11 +59,24 @@ const Index: NextPage = () => {
               property_keys: ['kakao_account.email'],
             },
             success: async function (response: kakaoInfo) {
-              const id = response.id;
+              const uniqueCode = response.id;
               const email = response.kakao_account.email;
-              window.localStorage.setItem('id', id.toString());
-              window.localStorage.setItem('email', email);
-              router.push('/getting-started');
+              try {
+                const member = await checkMember(email);
+                onLoginSuccess(member);
+              } catch (e) {
+                const regMember: RegisterMember = {
+                  kakao: email,
+                  uniqueCode: uniqueCode,
+                };
+                try {
+                  const id = await registerMember(regMember);
+                  const member = await getMember(id);
+                  onLoginSuccess(member);
+                } catch (e) {
+                  console.log(e);
+                }
+              }
             },
             fail: function (error: Error) {
               console.log(error);
@@ -62,6 +89,13 @@ const Index: NextPage = () => {
       });
     }
   };
+
+  useEffect(() => {
+    if (window.localStorage.getItem('kakao')) {
+      router.push('/home');
+    }
+  }, [router]);
+
   return (
     <>
       <Script src={'https://developers.kakao.com/sdk/js/kakao.js'} strategy={'beforeInteractive'} />

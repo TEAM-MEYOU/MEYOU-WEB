@@ -3,13 +3,57 @@ import 'normalize.css/normalize.css';
 import type { AppProps } from 'next/app';
 import Layout from '@components/AppLayout';
 import Navigation from '@components/Navigation';
+import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { checkMember, Member } from '@apis/member';
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: { staleTime: Infinity, cacheTime: Infinity },
+        },
+      })
+  );
+
+  const fetchUser = async () => {
+    const user: Member = await checkMember(window.localStorage.getItem('kakao')!);
+    queryClient.setQueryData('user', user);
+    onCheckValidUser(user);
+  };
+
+  const onCheckValidUser = (user: Member) => {
+    if (!user.coupleId && ['/setting', '/getting-started', '/connection'].indexOf(router.pathname) == -1) {
+      router.push('/getting-started');
+    }
+  };
+
+  useEffect(() => {
+    const kakao = window.localStorage.getItem('kakao');
+    const user = queryClient.getQueryData<Member>('user');
+    if (!kakao) {
+      router.push('/');
+    } else {
+      if (!user) {
+        fetchUser();
+      } else {
+        onCheckValidUser(user);
+      }
+    }
+  }, [Component]);
+
   return (
-    <Layout>
-      <Component {...pageProps} />
-      <Navigation />
-    </Layout>
+    <QueryClientProvider client={queryClient}>
+      <Hydrate state={pageProps.dehydratedState}>
+        <Layout>
+          <Component {...pageProps} />
+          <Navigation />
+        </Layout>
+      </Hydrate>
+    </QueryClientProvider>
   );
 }
 
