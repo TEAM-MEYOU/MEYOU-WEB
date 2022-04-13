@@ -21,6 +21,9 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
+      "@apis/*": [
+        "src/apis/*"
+      ],
       "@constants/*": [
         "src/constants/*"
       ],
