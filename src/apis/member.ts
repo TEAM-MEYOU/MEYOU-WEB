@@ -10,7 +10,7 @@ export interface Member {
   coupleId: number;
   coupleMemberId: number;
   isActive: boolean;
-  imageUrl: string;
+  imageUrl?: string;
 
   coupleInfo?: Member;
 }
@@ -42,5 +42,14 @@ export const checkMember = async (kakao: string) => {
  */
 export const registerMember = async (member: RegisterMember) => {
   const response = await axios.post(API_URL, member);
+  return response.data;
+};
+
+/**
+ * Member Update API
+ * @param member
+ */
+export const updateMember = async (member: Partial<Member>) => {
+  const response = await axios.put(API_URL, member);
   return response.data;
 };

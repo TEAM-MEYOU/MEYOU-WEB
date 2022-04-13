@@ -5,14 +5,39 @@ import colors from '@constants/colors';
 import Image from '@components/Image';
 import styled from '@emotion/styled';
 import Button from '@components/Button';
+import { useState } from 'react';
+import useUser from '@hooks/useUser';
+import { Member, updateMember } from '@apis/member';
+import { useQueryClient } from 'react-query';
 
 interface Props {
-  onClose?: () => void;
+  onClose: () => void;
 }
 
 function Profile({ onClose }: Props) {
+  const user = useUser();
+  const queryClient = useQueryClient();
+  const [nickName, setNickName] = useState(() => {
+    if (!user.data!.coupleInfo!.nickname) {
+      return '';
+    } else {
+      return user.data!.coupleInfo!.nickname;
+    }
+  });
+
+  const handleClickButton = async () => {
+    const member: Partial<Member> = { ...user.data!.coupleInfo, nickname: nickName };
+    try {
+      await updateMember(member);
+      await queryClient.invalidateQueries('user');
+      onClose();
+    } catch (e) {
+      alert('해당 닉네임으로 변경 할 수 없습니다.');
+    }
+  };
+
   return (
-    <Modal onClose={onClose} title="프로필 설정하기">
+    <Modal onClose={onClose} title="프로필   설정하기">
       <Text
         css={css`
           display: block;
@@ -41,9 +66,15 @@ function Profile({ onClose }: Props) {
             alt={'프로필 이미지'}
           />
         </label>
-        <NameInput placeholder={'닉네임 설정'} />
+        <NameInput
+          placeholder={'닉네임 설정'}
+          value={nickName}
+          onChange={e => {
+            setNickName(e.target.value);
+          }}
+        />
       </div>
-      <Button>변경</Button>
+      <Button onClick={handleClickButton}>변경</Button>
     </Modal>
   );
 }
