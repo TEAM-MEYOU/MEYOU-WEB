@@ -6,6 +6,10 @@ import styled from '@emotion/styled';
 import Text from '@components/Text';
 import { css } from '@emotion/react';
 import Profile from '@components/setting/Profile';
+import { checkAuthCode, makeAuthCode } from '@apis/couple';
+import useUser from '@hooks/useUser';
+import { useQueryClient } from 'react-query';
+import { useRouter } from 'next/router';
 
 const Auth = {
   Create: 'create',
@@ -22,13 +26,29 @@ interface Props {
 }
 
 function AuthCode({ authValue, setModal }: Props) {
+  const user = useUser();
   const [auth, setAuth] = useState<AuthValue>(authValue);
-  const handleClickConnect = () => {
-    setAuth('profile');
-  };
-  const handleClickCreateCode = () => {
+  const [coupleUniqueCode, setCoupleUniqueCode] = useState('');
+  const [authCode, setAuthCode] = useState('');
+  const [inputAuthCode, setInputAuthCode] = useState('');
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  const handleClickCreateCode = async () => {
+    const authCode = await makeAuthCode(user.data!.uniqueCode, coupleUniqueCode);
+    setAuthCode(String(authCode));
     setAuth('code');
   };
+  const handleClickConnect = async () => {
+    try {
+      await checkAuthCode(user.data!.uniqueCode, inputAuthCode);
+      await queryClient.invalidateQueries('user');
+      setAuth('profile');
+    } catch (e) {
+      alert('인증번호가 일치하지 않습니다.');
+    }
+  };
+
   return (
     <Modal onClose={() => setModal(false)}>
       {auth === 'create' && (
@@ -36,7 +56,13 @@ function AuthCode({ authValue, setModal }: Props) {
           <IconWithText container={false} src={'/icons/code.png'}>
             상대방ID 입력하기
           </IconWithText>
-          <CodeInput autoFocus={true} />
+          <CodeInput
+            autoFocus={true}
+            value={coupleUniqueCode}
+            onChange={e => {
+              setCoupleUniqueCode(e.target.value);
+            }}
+          />
           <Button onClick={handleClickCreateCode}>인증코드 생성</Button>
         </>
       )}
@@ -50,10 +76,10 @@ function AuthCode({ authValue, setModal }: Props) {
             src={'/icons/code.png'}>
             인증코드 발급
           </IconWithText>
-          <CodeText>1</CodeText>
-          <CodeText>2</CodeText>
-          <CodeText>3</CodeText>
-          <CodeText>4</CodeText>
+          <CodeText>{authCode[0]}</CodeText>
+          <CodeText>{authCode[1]}</CodeText>
+          <CodeText>{authCode[2]}</CodeText>
+          <CodeText>{authCode[3]}</CodeText>
           <Text
             css={css`
               display: block;
@@ -68,11 +94,23 @@ function AuthCode({ authValue, setModal }: Props) {
           <IconWithText container={false} src={'/icons/code.png'}>
             인증코드 입력하기
           </IconWithText>
-          <CodeInput autoFocus={true} />
+          <CodeInput
+            autoFocus={true}
+            value={inputAuthCode}
+            onChange={e => {
+              setInputAuthCode(e.target.value);
+            }}
+          />
           <Button onClick={handleClickConnect}>연결하기</Button>
         </>
       )}
-      {auth === 'profile' && <Profile />}
+      {auth === 'profile' && (
+        <Profile
+          onClose={() => {
+            router.push('/home');
+          }}
+        />
+      )}
     </Modal>
   );
 }

@@ -5,14 +5,66 @@ import colors from '@constants/colors';
 import Image from '@components/Image';
 import styled from '@emotion/styled';
 import Button from '@components/Button';
+import { ChangeEvent, useState } from 'react';
+import useUser from '@hooks/useUser';
+import { Member, updateMember } from '@apis/member';
+import { useQueryClient } from 'react-query';
+import useAWS from '@hooks/useAWS';
 
 interface Props {
-  onClose?: () => void;
+  onClose: () => void;
+}
+
+interface IImage {
+  file: File | null;
+  url: string;
 }
 
 function Profile({ onClose }: Props) {
+  const user = useUser();
+  const aws = useAWS();
+  const queryClient = useQueryClient();
+  const [image, setImage] = useState<IImage>(() => {
+    if (user.data) {
+      return { file: null, url: user.data.coupleInfo!.imageUrl };
+    } else {
+      return { file: null, url: '/icons/user.jpeg' };
+    }
+  });
+  const [nickName, setNickName] = useState(() => {
+    if (user.data) {
+      return user.data.coupleInfo!.nickname ? user.data.coupleInfo!.nickname : '';
+    } else {
+      return '';
+    }
+  });
+
+  const onChangeImage = (e: ChangeEvent) => {
+    const input = e.target as HTMLInputElement;
+    if (!input.files?.length) {
+      return;
+    }
+    const file = input.files[0];
+    const url = URL.createObjectURL(file);
+    setImage({ file: file, url: url });
+  };
+
+  const handleClickButton = async () => {
+    const member: Partial<Member> = { ...user.data!.coupleInfo, nickname: nickName };
+    try {
+      if (image.file) {
+        aws.upload(image.file, user.data!.id);
+      }
+      await updateMember(member);
+      await queryClient.invalidateQueries('user');
+      onClose();
+    } catch (e) {
+      alert('에러 발생');
+    }
+  };
+
   return (
-    <Modal onClose={onClose} title="프로필 설정하기">
+    <Modal onClose={onClose} title="프로필   설정하기">
       <Text
         css={css`
           display: block;
@@ -27,7 +79,7 @@ function Profile({ onClose }: Props) {
           align-items: center;
           padding: 1.5rem 0;
         `}>
-        <ProfileInput id={'profile'} type="file" accept={'image/jpeg, image/png'} />
+        <ProfileInput onChange={onChangeImage} id={'profile'} type="file" accept={'image/jpeg, image/png'} />
         <label htmlFor={'profile'}>
           <Image
             css={css`
@@ -37,13 +89,19 @@ function Profile({ onClose }: Props) {
             `}
             width={80}
             height={80}
-            src={'/icons/user.jpeg'}
+            src={image.url}
             alt={'프로필 이미지'}
           />
         </label>
-        <NameInput placeholder={'닉네임 설정'} />
+        <NameInput
+          placeholder={'닉네임 설정'}
+          value={nickName}
+          onChange={e => {
+            setNickName(e.target.value);
+          }}
+        />
       </div>
-      <Button>변경</Button>
+      <Button onClick={handleClickButton}>변경</Button>
     </Modal>
   );
 }

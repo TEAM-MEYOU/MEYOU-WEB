@@ -6,19 +6,38 @@ import { useRouter } from 'next/router';
 import { css } from '@emotion/react';
 import IconWithText from '@components/IconWithText';
 import Lottie from '@components/Lottie';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import useUser from '@hooks/useUser';
+import { connectCouple } from '@apis/couple';
+import { getMemberByUniqueCode, Member } from '@apis/member';
 
 const Connection: NextPage = () => {
   const router = useRouter();
+  const user = useUser();
   const { id } = router.query;
   const [loading, setLoading] = useState(false);
+  const [kakao, setKakao] = useState('');
 
   const handleClickConnect = async () => {
     setLoading(true);
+    await connectCouple(id as string, user.data!.uniqueCode);
     setTimeout(() => {
       router.push('/home');
     }, 3000);
   };
+
+  const fetchValidUser = async () => {
+    try {
+      const member: Member = await getMemberByUniqueCode(id as string);
+      setKakao(member.kakao);
+    } catch (e) {
+      alert('유효하지 않은 페이지입니다.');
+      router.push('/home');
+    }
+  };
+  useEffect(() => {
+    id && fetchValidUser();
+  }, [id]);
   return (
     <>
       <Container
@@ -69,7 +88,7 @@ const Connection: NextPage = () => {
                 margin-bottom: 10px;
                 font-size: 3rem;
               `}>
-              카카오 아이디: alxious@naver.com
+              카카오 아이디: {kakao}
             </Text>
             <Button
               onClick={handleClickConnect}
