@@ -5,15 +5,19 @@ import Container from '@components/Container';
 import colors from '@constants/colors';
 import Profile from '@components/setting/Profile';
 import { useState } from 'react';
+import CoupleData from '@components/setting/CoupleData';
 
 const Setting: NextPage = () => {
-  const [modal, setModal] = useState(false);
+  const [profile, setProfile] = useState(false);
+  const [couple, setCouple] = useState(false);
   return (
     <>
-      <SettingMenu title={'상대방 프로필 변경'} onClick={() => setModal(true)} />
+      <SettingMenu title={'커플 정보 변경'} onClick={() => setCouple(true)} />
+      <SettingMenu title={'상대방 프로필 변경'} onClick={() => setProfile(true)} />
       <SettingMenu title={'커플 연결 해제'} warn={true} />
       <SettingMenu title={'탈퇴하기'} warn={true} />
-      {modal && <Profile onClose={() => setModal(false)} />}
+      {profile && <Profile onClose={() => setProfile(false)} />}
+      {couple && <CoupleData onClose={() => setCouple(false)} />}
     </>
   );
 };
