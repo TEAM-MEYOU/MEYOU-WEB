@@ -25,17 +25,17 @@ function Profile({ onClose }: Props) {
   const aws = useAWS();
   const queryClient = useQueryClient();
   const [image, setImage] = useState<IImage>(() => {
-    if (user.data!.coupleInfo!.imageUrl) {
-      return { file: null, url: user.data!.coupleInfo!.imageUrl };
+    if (user.data) {
+      return { file: null, url: user.data.coupleInfo!.imageUrl };
     } else {
       return { file: null, url: '/icons/user.jpeg' };
     }
   });
   const [nickName, setNickName] = useState(() => {
-    if (!user.data!.coupleInfo!.nickname) {
-      return '';
+    if (user.data) {
+      return user.data.coupleInfo!.nickname ? user.data.coupleInfo!.nickname : '';
     } else {
-      return user.data!.coupleInfo!.nickname;
+      return '';
     }
   });
 

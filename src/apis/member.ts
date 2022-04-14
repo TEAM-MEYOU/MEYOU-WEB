@@ -10,7 +10,7 @@ export interface Member {
   coupleId: number;
   coupleMemberId: number;
   isActive: boolean;
-  imageUrl?: string;
+  imageUrl: string;
 
   coupleInfo?: Member;
 }
