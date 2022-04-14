@@ -21,3 +21,8 @@ export const checkAuthCode = async (uniqueCode: string, authCode: string) => {
   const response = await axios.get(`${API_URL}/check?uniqueCode=${uniqueCode}&authCode=${authCode}`);
   return response.data;
 };
+
+export const connectCouple = async (uniqueCode: string, coupleUniqueCode: string) => {
+  const response = await axios.post(`${API_URL}?uniqueCode=${uniqueCode}&coupleUniqueCode=${coupleUniqueCode}`);
+  return response.data;
+};
