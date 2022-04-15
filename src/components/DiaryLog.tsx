@@ -44,7 +44,7 @@ function DiaryLog({ date }: Props) {
         {DiaryDateText()}
       </Text>
       <DiaryLogItem />
-      <DiaryLogItem emotion={'love'}>
+      <DiaryLogItem emotion={'LOVE'}>
         오늘 너무 재밋있었어요! 다음주에는 꼭 우리가 저번에 말했던거 같이해요! 사랑해용
       </DiaryLogItem>
     </Container>
@@ -53,11 +53,12 @@ function DiaryLog({ date }: Props) {
 
 export default DiaryLog;
 
-export const Emotion = {
-  LOVE: 'love',
-  ANGRY: 'angry',
-  SAD: 'sad',
-  SMILE: 'smile',
+const Emotion = {
+  Love: 'LOVE',
+  Angry: 'ANGRY',
+  Sad: 'SAD',
+  Smile: 'HAPPY',
+  Neutral: 'NEUTRAL',
 } as const;
 
 export type EmotionValue = typeof Emotion[keyof typeof Emotion];

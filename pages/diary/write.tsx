@@ -8,21 +8,33 @@ import colors from '@constants/colors';
 import Button from '@components/Button';
 import { ComponentProps, useState } from 'react';
 import IconWithText from '@components/IconWithText';
-
-const Emotion = {
-  Love: 'love',
-  Angry: 'angry',
-  Sad: 'sad',
-  Smile: 'smile',
-} as const;
-
-type EmotionValue = typeof Emotion[keyof typeof Emotion];
+import useUser from '@hooks/useUser';
+import { WriteDiary, writeDiary } from '@apis/diary';
+import { EmotionValue } from '@components/DiaryLog';
+import { useRouter } from 'next/router';
 
 const Write: NextPage = () => {
-  const [emotion, setEmotion] = useState<EmotionValue>('love');
+  const user = useUser();
+  const [emotion, setEmotion] = useState<EmotionValue>('LOVE');
+  const [content, setContent] = useState('');
+  const router = useRouter();
 
   const handleClickEmotion = (emotion: EmotionValue) => {
     setEmotion(emotion);
+  };
+  const handleClickWrite = async () => {
+    try {
+      const diary: WriteDiary = {
+        memberId: user.data!.id,
+        content: content,
+        userEmotion: emotion,
+        predEmotion: emotion,
+      };
+      await writeDiary(diary);
+      router.push('/diary/complete');
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const date = new Date();
@@ -40,7 +52,11 @@ const Write: NextPage = () => {
           `}>
           쪼의 {date.getMonth() + 1}월 {date.getDate()}일 다이어리
         </Text>
-        <TextArea placeholder={'오늘의 다이어리를 작성해 보세요'} />
+        <TextArea
+          placeholder={'오늘의 다이어리를 작성해 보세요'}
+          value={content}
+          onChange={e => setContent(e.target.value)}
+        />
         <IconWithText
           css={css`
             width: auto;
@@ -72,10 +88,11 @@ const Write: NextPage = () => {
           더 좋은 서비스를위해 MeYou에 감정이 제공됩니다.
         </Text>
         <div>
-          <EmotionImage emotion={'love'} selectedEmotion={emotion} onClick={() => handleClickEmotion('love')} />
-          <EmotionImage emotion={'smile'} selectedEmotion={emotion} onClick={() => handleClickEmotion('smile')} />
-          <EmotionImage emotion={'sad'} selectedEmotion={emotion} onClick={() => handleClickEmotion('sad')} />
-          <EmotionImage emotion={'angry'} selectedEmotion={emotion} onClick={() => handleClickEmotion('angry')} />
+          <EmotionImage emotion={'LOVE'} selectedEmotion={emotion} onClick={() => handleClickEmotion('LOVE')} />
+          <EmotionImage emotion={'HAPPY'} selectedEmotion={emotion} onClick={() => handleClickEmotion('HAPPY')} />
+          <EmotionImage emotion={'NEUTRAL'} selectedEmotion={emotion} onClick={() => handleClickEmotion('NEUTRAL')} />
+          <EmotionImage emotion={'SAD'} selectedEmotion={emotion} onClick={() => handleClickEmotion('SAD')} />
+          <EmotionImage emotion={'ANGRY'} selectedEmotion={emotion} onClick={() => handleClickEmotion('ANGRY')} />
         </div>
         <Text
           css={css`
@@ -95,6 +112,7 @@ const Write: NextPage = () => {
       </Container>
 
       <Button
+        onClick={handleClickWrite}
         css={css`
           margin-top: 15px;
           width: 90%;
