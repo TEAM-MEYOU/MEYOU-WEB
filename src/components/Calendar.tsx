@@ -91,7 +91,7 @@ function Calendar({ date, setDate }: Props) {
                     </Text>
                     <div>
                       <Image width={15} height={15} src={'/icons/emotions/love.png'} alt={''} />
-                      <Image width={15} height={15} src={'/icons/emotions/smile.png'} alt={''} />
+                      <Image width={15} height={15} src={'/icons/emotions/happy.png'} alt={''} />
                     </div>
                   </DateBox>
                 );

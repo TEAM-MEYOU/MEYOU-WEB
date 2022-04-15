@@ -57,7 +57,7 @@ function EmotionStatistics({ className }: Props) {
           <Text>x 4</Text>
         </Box>
         <Box>
-          <EmotionImage src={'/icons/emotions/smile.png'} />
+          <EmotionImage src={'/icons/emotions/happy.png'} />
           <Text>x 2</Text>
         </Box>
         <Box>
