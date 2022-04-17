@@ -31,7 +31,7 @@ const Write: NextPage = () => {
         predEmotion: emotion,
       };
       await writeDiary(diary);
-      router.push('/diary/complete');
+      await router.push('/diary/complete');
     } catch (e) {
       console.log(e);
     }

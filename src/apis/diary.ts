@@ -31,3 +31,13 @@ export const getCoupleDiary = async (coupleId: number) => {
   const response = await axios.get(`${API_URL}/couple?coupleId=${coupleId}`);
   return response.data;
 };
+
+/**
+ * 해당 날짜 다이어리 조회 API
+ * @param memberId
+ * @param date
+ */
+export const getDiaryByDate = async (memberId: number, date: string) => {
+  const response = await axios.get(`${API_URL}/my?memberId=${memberId}&writeTime=${date}`);
+  return response.data;
+};
