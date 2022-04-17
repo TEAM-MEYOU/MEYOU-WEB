@@ -31,94 +31,101 @@ const Write: NextPage = () => {
         predEmotion: emotion,
       };
       await writeDiary(diary);
-      router.push('/diary/complete');
+      await router.push('/diary/complete');
     } catch (e) {
       console.log(e);
     }
   };
-
   const date = new Date();
   return (
     <>
-      <Container
-        css={css`
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-        `}>
-        <Text
-          css={css`
-            font-size: 2.6rem;
-          `}>
-          쪼의 {date.getMonth() + 1}월 {date.getDate()}일 다이어리
-        </Text>
-        <TextArea
-          placeholder={'오늘의 다이어리를 작성해 보세요'}
-          value={content}
-          onChange={e => setContent(e.target.value)}
-        />
-        <IconWithText
-          css={css`
-            width: auto;
-            margin-left: auto;
-          `}
-          src={'/icons/coin.png'}>
-          다이어리 작성시 코인 + 1
-        </IconWithText>
-      </Container>
+      {user.isLoading || (
+        <>
+          <Container
+            css={css`
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+            `}>
+            <Text
+              css={css`
+                font-size: 2.6rem;
+              `}>
+              {user.data?.nickname}의 {date.getMonth() + 1}월 {date.getDate()}일 다이어리
+            </Text>
+            <TextArea
+              placeholder={'오늘의 다이어리를 작성해 보세요'}
+              value={content}
+              onChange={e => setContent(e.target.value)}
+            />
+            <IconWithText
+              css={css`
+                width: auto;
+                margin-left: auto;
+              `}
+              src={'/icons/coin.png'}>
+              다이어리 작성시 코인 + 1
+            </IconWithText>
+          </Container>
 
-      <Container
-        css={css`
-          display: flex;
-          flex-direction: column;
-          margin-top: 15px;
-        `}>
-        <Text
-          css={css`
-            font-size: 2.6rem;
-          `}>
-          오늘 나의감정
-        </Text>
-        <Text
-          css={css`
-            font-size: 1.6rem;
-            color: ${colors.content200};
-            margin-bottom: 10px;
-          `}>
-          더 좋은 서비스를위해 MeYou에 감정이 제공됩니다.
-        </Text>
-        <div>
-          <EmotionImage emotion={'LOVE'} selectedEmotion={emotion} onClick={() => handleClickEmotion('LOVE')} />
-          <EmotionImage emotion={'HAPPY'} selectedEmotion={emotion} onClick={() => handleClickEmotion('HAPPY')} />
-          <EmotionImage emotion={'NEUTRAL'} selectedEmotion={emotion} onClick={() => handleClickEmotion('NEUTRAL')} />
-          <EmotionImage emotion={'SAD'} selectedEmotion={emotion} onClick={() => handleClickEmotion('SAD')} />
-          <EmotionImage emotion={'ANGRY'} selectedEmotion={emotion} onClick={() => handleClickEmotion('ANGRY')} />
-        </div>
-        <Text
-          css={css`
-            font-size: 2.6rem;
-            margin-top: 40px;
-            margin-bottom: 10px;
-          `}>
-          MeYou가 추측한 감정
-        </Text>
-        <Button
-          css={css`
-            width: 15rem;
-          `}
-          fullWidth={false}>
-          분석하기
-        </Button>
-      </Container>
+          <Container
+            css={css`
+              display: flex;
+              flex-direction: column;
+              margin-top: 15px;
+            `}>
+            <Text
+              css={css`
+                font-size: 2.6rem;
+              `}>
+              오늘 나의감정
+            </Text>
+            <Text
+              css={css`
+                font-size: 1.6rem;
+                color: ${colors.content200};
+                margin-bottom: 10px;
+              `}>
+              더 좋은 서비스를위해 MeYou에 감정이 제공됩니다.
+            </Text>
+            <div>
+              <EmotionImage emotion={'LOVE'} selectedEmotion={emotion} onClick={() => handleClickEmotion('LOVE')} />
+              <EmotionImage emotion={'HAPPY'} selectedEmotion={emotion} onClick={() => handleClickEmotion('HAPPY')} />
+              <EmotionImage
+                emotion={'NEUTRAL'}
+                selectedEmotion={emotion}
+                onClick={() => handleClickEmotion('NEUTRAL')}
+              />
+              <EmotionImage emotion={'SAD'} selectedEmotion={emotion} onClick={() => handleClickEmotion('SAD')} />
+              <EmotionImage emotion={'ANGRY'} selectedEmotion={emotion} onClick={() => handleClickEmotion('ANGRY')} />
+            </div>
+            <Text
+              css={css`
+                font-size: 2.6rem;
+                margin-top: 40px;
+                margin-bottom: 10px;
+              `}>
+              MeYou가 추측한 감정
+            </Text>
+            <Button
+              css={css`
+                width: 15rem;
+              `}
+              fullWidth={false}>
+              분석하기
+            </Button>
+          </Container>
 
-      <Button
-        onClick={handleClickWrite}
-        css={css`
-          margin-top: 15px;
-          width: 90%;
-        `}>
-        완료
-      </Button>
+          <Button
+            onClick={handleClickWrite}
+            css={css`
+              margin-top: 15px;
+              width: 90%;
+            `}>
+            완료
+          </Button>
+        </>
+      )}
     </>
   );
 };
