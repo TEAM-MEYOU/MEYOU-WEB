@@ -15,7 +15,7 @@ import { ConvertMeYouDateString, DiffCoupleTime } from '@utils/date';
 function CoupleInfo() {
   const user = useUser();
   const couple = useQuery<Couple>('couple', () => getCouple(user.data!.coupleId), {
-    enabled: user.data !== undefined,
+    enabled: user.data !== undefined && user.data.coupleId !== null,
     retry: 0,
   });
   const [modal, setModal] = useState(false);

@@ -12,12 +12,12 @@ const Home: NextPage = () => {
   const [modal, setModal] = useState(false);
   const user = useUser();
   const coupleDiary = useInfiniteQuery<Page<CoupleDiary>>('couple_diary', () => getCoupleDiary(user.data!.coupleId), {
-    enabled: user.data !== undefined,
+    enabled: user.data !== undefined && user.data.coupleId !== null,
   });
 
   useEffect(() => {
-    if (user.data) {
-      user.data.coupleInfo!.nickname || setModal(true);
+    if (user.data?.coupleInfo) {
+      user.data.coupleInfo.nickname || setModal(true);
     }
   }, [user]);
   return (
