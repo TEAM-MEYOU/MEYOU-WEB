@@ -24,8 +24,10 @@ export const DiffCoupleTime = (date: Date) => {
  */
 export const ToJavaLocaleDate = (date: Date) => {
   const month = date.getMonth() + 1;
+  const day = date.getDate();
   const padMonth = month < 10 ? '0' + month : month;
-  return `${date.getFullYear()}-${padMonth}-${date.getDate()}`;
+  const padDay = day < 10 ? '0' + day : day;
+  return `${date.getFullYear()}-${padMonth}-${padDay}`;
 };
 
 /**

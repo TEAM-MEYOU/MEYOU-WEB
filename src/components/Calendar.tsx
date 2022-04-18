@@ -55,9 +55,11 @@ export interface DiaryDate {
 interface Props {
   date: DiaryDate;
   setDate: Dispatch<SetStateAction<DiaryDate>>;
+  diaryDate: Array<number>;
+  className?: string;
 }
 
-function Calendar({ date, setDate }: Props) {
+function Calendar({ date, setDate, diaryDate, className }: Props) {
   const { startDay, totalOfDay } = getCalendar(date.year, date.month);
 
   const onIncreaseMonth = () => {
@@ -85,8 +87,9 @@ function Calendar({ date, setDate }: Props) {
             .slice(index, index + 7)
             .map((value, i) => {
               if (index + i >= startDay) {
+                const value = index + i + 1 - startDay;
                 return (
-                  <DateBox value={index + i + 1 - startDay} key={index + i} date={date} setDate={setDate}>
+                  <DateBox value={value} key={index + i} date={date} setDate={setDate}>
                     <Text
                       css={css`
                         display: inline-block;
@@ -94,10 +97,9 @@ function Calendar({ date, setDate }: Props) {
                       `}>
                       {index + i + 1 - startDay}
                     </Text>
-                    <div>
-                      <Image width={15} height={15} src={'/icons/emotions/love.png'} alt={''} />
-                      <Image width={15} height={15} src={'/icons/emotions/happy.png'} alt={''} />
-                    </div>
+                    {diaryDate.indexOf(value) > -1 && (
+                      <Image width={20} height={20} src={'/icons/checked.png'} alt={''} />
+                    )}
                   </DateBox>
                 );
               } else return <DateBox key={index + i} />;
@@ -108,6 +110,7 @@ function Calendar({ date, setDate }: Props) {
   });
   return (
     <Container
+      className={className}
       css={css`
         display: flex;
         flex-direction: column;
@@ -226,7 +229,7 @@ const DateBox = ({ children, value = 0, date, setDate }: DateBox) => {
         flex-direction: column;
         align-items: center;
         cursor: pointer;
-        background-color: ${value === date?.day ? colors.grey200 : 'transparent'};
+        background-color: ${value === date?.day ? colors.red100 : 'transparent'};
         border-radius: 12px;
 
         &:nth-of-type(1) {
