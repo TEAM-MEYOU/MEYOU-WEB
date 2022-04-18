@@ -76,3 +76,8 @@ export const getDiaryById = async (id: number) => {
   const response = await axios.get(`${API_URL}/${id}`);
   return response.data;
 };
+
+export const getCoupleDiaryByDuration = async (coupleId: number, date: string) => {
+  const response = await axios.get(`${API_URL}/duration?coupleId=${coupleId}&dateInfo=${date}`);
+  return response.data;
+};
