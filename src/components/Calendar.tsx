@@ -5,7 +5,6 @@ import styled from '@emotion/styled';
 import { Dispatch, ReactNode, SetStateAction } from 'react';
 import colors from '@constants/colors';
 import Image from '@components/Image';
-import { DiaryDate } from '@components/DiaryLog';
 
 /**
  * 해당 년도가 윤년인지 판단해주는 유틸
@@ -45,6 +44,12 @@ function getCalendar(year: number, month: number) {
       break;
   }
   return { startDay, totalOfDay };
+}
+
+export interface DiaryDate {
+  year: number;
+  month: number;
+  day: number;
 }
 
 interface Props {
@@ -227,6 +232,7 @@ const DateBox = ({ children, value = 0, date, setDate }: DateBox) => {
         &:nth-of-type(1) {
           color: ${colors.red300};
         }
+
         &:nth-of-type(7) {
           color: ${colors.blue300};
         }

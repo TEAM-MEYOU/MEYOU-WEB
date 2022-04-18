@@ -14,6 +14,32 @@ export interface Diary {
 
 export type WriteDiary = Omit<Diary, 'id' | 'writeTime'>;
 
+export interface Page<T> {
+  content: Array<T>;
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  pageable: object;
+  size: number;
+  sort: {
+    empty: boolean;
+    sorted: boolean;
+    unsorted: boolean;
+  };
+  totalElements: number;
+  totalPages: number;
+}
+
+export interface CoupleDiary {
+  id: number;
+  coupleId: number;
+  diary1: number;
+  diary2: number | null;
+  writeTime: string;
+}
+
 /**
  * 다이어리 작성 API
  * @param diary
@@ -39,5 +65,14 @@ export const getCoupleDiary = async (coupleId: number) => {
  */
 export const getDiaryByDate = async (memberId: number, date: string) => {
   const response = await axios.get(`${API_URL}/my?memberId=${memberId}&writeTime=${date}`);
+  return response.data;
+};
+
+/**
+ * 해당 ID 다이어리 조회 API
+ * @param id
+ */
+export const getDiaryById = async (id: number) => {
+  const response = await axios.get(`${API_URL}/${id}`);
   return response.data;
 };

@@ -12,12 +12,14 @@ import useUser from '@hooks/useUser';
 import { WriteDiary, writeDiary } from '@apis/diary';
 import { EmotionValue } from '@components/DiaryLog';
 import { useRouter } from 'next/router';
+import { useQueryClient } from 'react-query';
 
 const Write: NextPage = () => {
   const user = useUser();
   const [emotion, setEmotion] = useState<EmotionValue>('LOVE');
   const [content, setContent] = useState('');
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const handleClickEmotion = (emotion: EmotionValue) => {
     setEmotion(emotion);
@@ -31,6 +33,7 @@ const Write: NextPage = () => {
         predEmotion: emotion,
       };
       await writeDiary(diary);
+      await queryClient.invalidateQueries('couple_diary');
       await router.push('/diary/complete');
     } catch (e) {
       console.log(e);

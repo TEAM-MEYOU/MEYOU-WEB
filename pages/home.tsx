@@ -5,10 +5,15 @@ import CoupleInfo from '@components/CoupleInfo';
 import { useEffect, useState } from 'react';
 import Profile from '@components/setting/Profile';
 import useUser from '@hooks/useUser';
+import { useInfiniteQuery } from 'react-query';
+import { CoupleDiary, getCoupleDiary, Page } from '@apis/diary';
 
 const Home: NextPage = () => {
   const [modal, setModal] = useState(false);
   const user = useUser();
+  const coupleDiary = useInfiniteQuery<Page<CoupleDiary>>('couple_diary', () => getCoupleDiary(user.data!.coupleId), {
+    enabled: user.data !== undefined,
+  });
 
   useEffect(() => {
     if (user.data) {
@@ -19,9 +24,9 @@ const Home: NextPage = () => {
     <>
       <CoupleInfo />
       <ColumnList>
-        <DiaryLog date={{ year: 2022, month: 4, day: 11 }} />
-        <DiaryLog date={{ year: 2022, month: 4, day: 10 }} />
-        <DiaryLog date={{ year: 2022, month: 4, day: 9 }} />
+        {coupleDiary.data?.pages.map(page =>
+          page.content.map(content => <DiaryLog key={content.id} coupleDiary={content} />)
+        )}
       </ColumnList>
       {modal && <Profile onClose={() => setModal(false)} />}
     </>

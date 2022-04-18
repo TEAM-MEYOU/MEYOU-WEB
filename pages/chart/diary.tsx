@@ -1,9 +1,7 @@
 import { NextPage } from 'next';
 import Header from '@components/Header';
-import Calendar from '@components/Calendar';
+import Calendar, { DiaryDate } from '@components/Calendar';
 import { useRouter } from 'next/router';
-import DiaryLog, { DiaryDate } from '@components/DiaryLog';
-import ColumnList from '@components/ColumnList';
 import { useState } from 'react';
 
 const initDate: DiaryDate = {
@@ -20,9 +18,6 @@ const ChartDiary: NextPage = () => {
     <>
       <Header onClick={() => router.back()}>다이어리 기록</Header>
       <Calendar date={date} setDate={setDate} />
-      <ColumnList>
-        <DiaryLog date={date} />
-      </ColumnList>
     </>
   );
 };
