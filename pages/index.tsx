@@ -6,7 +6,7 @@ import colors from '@constants/colors';
 import Script from 'next/script';
 import { useRouter } from 'next/router';
 import { checkMember, getMember, Member, registerMember, RegisterMember } from '@apis/member';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useQueryClient } from 'react-query';
 
 interface login {
@@ -33,6 +33,7 @@ interface kakaoInfo {
 const Index: NextPage = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const [loading, setLoading] = useState(false);
 
   const onLoginSuccess = (member: Member) => {
     window.localStorage.setItem('kakao', member.kakao);
@@ -59,6 +60,7 @@ const Index: NextPage = () => {
               property_keys: ['kakao_account.email'],
             },
             success: async function (response: kakaoInfo) {
+              setLoading(true);
               const uniqueCode = response.id;
               const email = response.kakao_account.email;
               try {
@@ -78,13 +80,13 @@ const Index: NextPage = () => {
                 }
               }
             },
-            fail: function (error: Error) {
-              console.log(error);
+            fail: function () {
+              alert('카카오 로그인 에러 발생');
             },
           });
         },
-        fail: function (error: Error) {
-          console.log(error);
+        fail: function () {
+          alert('카카오 로그인 에러 발생');
         },
       });
     }
@@ -127,6 +129,11 @@ const Index: NextPage = () => {
         `}
         alt={'카카오 로그인 이미지'}
       />
+      {loading && (
+        <LoadingBox>
+          <Loading />
+        </LoadingBox>
+      )}
     </>
   );
 };
@@ -135,6 +142,37 @@ const Image = styled.img`
   width: 80px;
   height: 80px;
   margin-top: 150px;
+`;
+
+const LoadingBox = styled.div`
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+`;
+
+const Loading = styled.span`
+  position: fixed;
+  top: 50%;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border: 3px solid #ff6969;
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+  -webkit-animation: spin 1s ease-in-out infinite;
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
 `;
 
 export default Index;
