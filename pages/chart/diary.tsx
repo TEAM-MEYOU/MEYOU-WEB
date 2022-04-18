@@ -2,9 +2,15 @@ import { NextPage } from 'next';
 import Header from '@components/Header';
 import Calendar from '@components/Calendar';
 import { useRouter } from 'next/router';
-import DiaryLog, { DiaryDate } from '@components/DiaryLog';
+import DiaryLog from '@components/DiaryLog';
 import ColumnList from '@components/ColumnList';
 import { useState } from 'react';
+
+interface DiaryDate {
+  year: number;
+  month: number;
+  day: number;
+}
 
 const initDate: DiaryDate = {
   year: new Date().getFullYear(),
@@ -21,7 +27,7 @@ const ChartDiary: NextPage = () => {
       <Header onClick={() => router.back()}>다이어리 기록</Header>
       <Calendar date={date} setDate={setDate} />
       <ColumnList>
-        <DiaryLog date={date} />
+        <DiaryLog coupleDiary={null!} />
       </ColumnList>
     </>
   );
