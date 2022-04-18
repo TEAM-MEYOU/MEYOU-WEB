@@ -5,14 +5,19 @@ import Lottie from '@components/Lottie';
 import { css } from '@emotion/react';
 import IconWithText from '@components/IconWithText';
 import Button from '@components/Button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AuthCode from '@components/AuthCode';
 import useUser from '@hooks/useUser';
+import { getMember, Member } from '@apis/member';
+import { useRouter } from 'next/router';
+import { useQueryClient } from 'react-query';
 
 const GettingStarted: NextPage = () => {
   const user = useUser();
   const [modal, setModal] = useState(false);
   const [connectModal, setConnectModal] = useState(false);
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const handleClickLinkShare = async () => {
     const url = `https://meyou-web.vercel.app/connection?id=${user.data!.uniqueCode}`;
     if (typeof navigator.share !== 'undefined') {
@@ -42,6 +47,21 @@ const GettingStarted: NextPage = () => {
       console.log(e);
     }
   };
+
+  useEffect(() => {
+    if (user.data) {
+      user.data.coupleInfo && router.push('/home');
+    }
+    const falling = setInterval(async () => {
+      const response: Member = await getMember(user.data!.id);
+      if (response.coupleInfo) {
+        queryClient.setQueryData('user', response);
+        await router.push('/home');
+      }
+    }, 6000);
+
+    return () => clearInterval(falling);
+  }, [user.data, router, queryClient]);
 
   return (
     <>
