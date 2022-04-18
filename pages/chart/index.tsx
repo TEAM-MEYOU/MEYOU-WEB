@@ -17,7 +17,7 @@ const Chart: NextPage = () => {
           css={css`
             cursor: pointer;
           `}
-          src={'/icons/emotions/love.png'}>
+          src={'/icons/emotions/LOVE.png'}>
           다이어리 기록보기
         </IconWithText>
       </Button>

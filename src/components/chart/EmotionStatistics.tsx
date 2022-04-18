@@ -46,26 +46,26 @@ function EmotionStatistics({ className }: Props) {
             `}>
             이번주 평균감정:{' '}
           </Text>
-          <EmotionImage src={'/icons/emotions/love.png'} />
+          <EmotionImage src={'/icons/emotions/LOVE.png'} />
         </Box>
         <Box>
-          <EmotionImage src={'/icons/emotions/love.png'} />
+          <EmotionImage src={'/icons/emotions/LOVE.png'} />
           <Text>x 4</Text>
         </Box>
         <Box>
-          <EmotionImage src={'/icons/emotions/neutral.png'} />
+          <EmotionImage src={'/icons/emotions/NEUTRAL.png'} />
           <Text>x 4</Text>
         </Box>
         <Box>
-          <EmotionImage src={'/icons/emotions/happy.png'} />
+          <EmotionImage src={'/icons/emotions/HAPPY.png'} />
           <Text>x 2</Text>
         </Box>
         <Box>
-          <EmotionImage src={'/icons/emotions/sad.png'} />
+          <EmotionImage src={'/icons/emotions/SAD.png'} />
           <Text>x 1</Text>
         </Box>
         <Box>
-          <EmotionImage src={'/icons/emotions/angry.png'} />
+          <EmotionImage src={'/icons/emotions/ANGRY.png'} />
           <Text>x 1</Text>
         </Box>
         <Text
