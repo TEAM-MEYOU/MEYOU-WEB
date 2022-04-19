@@ -35,6 +35,7 @@ const Write: NextPage = () => {
       await writeDiary(diary);
       await queryClient.invalidateQueries('couple_diary');
       await queryClient.invalidateQueries('today');
+      await queryClient.invalidateQueries('couple');
       await router.push('/diary/complete');
     } catch (e) {
       console.log(e);
