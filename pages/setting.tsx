@@ -7,6 +7,7 @@ import Profile from '@components/setting/Profile';
 import { useState } from 'react';
 import CoupleData from '@components/setting/CoupleData';
 import { useRouter } from 'next/router';
+import UserInfo from '@components/UserInfo';
 
 const Setting: NextPage = () => {
   const [profile, setProfile] = useState(false);
@@ -21,6 +22,7 @@ const Setting: NextPage = () => {
   };
   return (
     <>
+      <UserInfo />
       <SettingMenu title={'커플 정보 변경'} onClick={() => setCouple(true)} />
       <SettingMenu title={'상대방 프로필 변경'} onClick={() => setProfile(true)} />
       <SettingMenu title={'커플 연결 해제'} warn={true} />
@@ -46,7 +48,7 @@ const SettingMenu = ({ title, warn, onClick }: Props) => {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 1.5rem;
+        margin-top: 1.5rem;
         cursor: pointer;
       `}>
       <Text
