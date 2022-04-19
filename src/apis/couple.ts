@@ -8,6 +8,7 @@ export interface Couple {
   member2: string;
   coupleStart: Date;
   isActive: boolean;
+  coin: number;
 }
 
 /**
