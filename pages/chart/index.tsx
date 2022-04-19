@@ -4,7 +4,7 @@ import Button from '@components/Button';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
 
-type ChartPath = 'diary' | 'week-emotion' | 'month-emotion' | 'frequency' | 'long';
+type ChartPath = 'diary' | 'week-emotion' | 'month-emotion' | 'frequency' | 'long' | 'coin';
 const Chart: NextPage = () => {
   const router = useRouter();
   const route = (path: ChartPath) => {
@@ -55,6 +55,15 @@ const Chart: NextPage = () => {
           `}
           src={'/icons/thinking.png'}>
           누가 더 다이어리를 길게 썼을까요?
+        </IconWithText>
+      </Button>
+      <Button iconButton={true} onClick={() => route('coin')}>
+        <IconWithText
+          css={css`
+            cursor: pointer;
+          `}
+          src={'/icons/coin.png'}>
+          코인을 어떻게 사용했을까요?
         </IconWithText>
       </Button>
     </>
