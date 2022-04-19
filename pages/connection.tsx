@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import useUser from '@hooks/useUser';
 import { connectCouple } from '@apis/couple';
 import { getMemberByUniqueCode, Member } from '@apis/member';
+import { useQueryClient } from 'react-query';
 
 const Connection: NextPage = () => {
   const router = useRouter();
@@ -17,10 +18,12 @@ const Connection: NextPage = () => {
   const { id } = router.query;
   const [loading, setLoading] = useState(false);
   const [kakao, setKakao] = useState('');
+  const queryClient = useQueryClient();
 
   const handleClickConnect = async () => {
     setLoading(true);
     await connectCouple(id as string, user.data!.uniqueCode);
+    await queryClient.invalidateQueries('user');
     setTimeout(() => {
       router.push('/home');
     }, 3000);
