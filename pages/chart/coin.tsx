@@ -5,7 +5,7 @@ import Text from '@components/Text';
 import ColumnList from '@components/ColumnList';
 import { css } from '@emotion/react';
 import { useQuery } from 'react-query';
-import { CoinGainHash, CoinLog, CoinLogHash, getCoinLog } from '@apis/coin';
+import { CoinGainHash, CoinLog, getCoinLog } from '@apis/coin';
 import useUser from '@hooks/useUser';
 import { ToJavaLocaleDate } from '@utils/date';
 import colors from '@constants/colors';
@@ -55,11 +55,16 @@ const CoinLogItem = memo(({ log }: Props) => {
         width: 90%;
         padding: 1rem;
         border-radius: 12px;
-        background-color: ${log.coinLogType === 'GAIN' ? colors.blue200 : colors.content100};
+        background-color: ${log.coinLogType === 'GAIN' ? colors.blue100 : colors.content100};
         box-shadow: ${colors.boxShadow};
+        margin-bottom: 1.5rem;
       `}>
-      <Text>{new Date(log.createdDate).toLocaleString()}</Text>
-      <Text>{CoinLogHash[log.coinLogType]}</Text>
+      <Text
+        css={css`
+          width: 18rem;
+        `}>
+        {new Date(log.createdDate).toLocaleString()}
+      </Text>
       <Text>{CoinGainHash[log.coinGainType]}</Text>
       <div
         css={css`
