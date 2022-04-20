@@ -77,7 +77,13 @@ export const getDiaryById = async (id: number) => {
   return response.data;
 };
 
-export const getCoupleDiaryByDuration = async (coupleId: number, date: string) => {
-  const response = await axios.get(`${API_URL}/duration?coupleId=${coupleId}&dateInfo=${date}`);
+/**
+ * start ~ end 기간의 커플다이어리 조회하는 API
+ * @param coupleId
+ * @param start
+ * @param end
+ */
+export const getCoupleDiaryByDuration = async (coupleId: number, start: string, end: string) => {
+  const response = await axios.get(`${API_URL}/duration?coupleId=${coupleId}&start=${start}&end=${end}`);
   return response.data;
 };

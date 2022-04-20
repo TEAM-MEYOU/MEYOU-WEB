@@ -25,7 +25,11 @@ const ChartDiary: NextPage = () => {
   const coupleDiaryLog = useQuery<Array<CoupleDiary>>(
     ['couple_diary', date.year, date.month],
     () =>
-      getCoupleDiaryByDuration(user.data!.coupleId, ToJavaLocaleDate(new Date(date.year, date.month - 1, date.day))),
+      getCoupleDiaryByDuration(
+        user.data!.coupleId,
+        ToJavaLocaleDate(new Date(date.year, date.month - 1, 1)),
+        ToJavaLocaleDate(new Date(date.year, date.month + 1, 1))
+      ),
     { enabled: user.data !== undefined, retry: 0 }
   );
   const [diaryDate, setDiaryDate] = useState<Array<number>>([]);
