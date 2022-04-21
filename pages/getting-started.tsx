@@ -54,8 +54,8 @@ const GettingStarted: NextPage = () => {
     }
     const falling = setInterval(async () => {
       const response: Member = await getMember(user.data!.id);
-      if (response.coupleInfo) {
-        queryClient.setQueryData('user', response);
+      if (response.coupleId) {
+        await queryClient.invalidateQueries('user');
         await router.push('/home');
       }
     }, 6000);
