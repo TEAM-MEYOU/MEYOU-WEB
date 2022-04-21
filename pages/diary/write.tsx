@@ -20,9 +20,17 @@ const Write: NextPage = () => {
   const [content, setContent] = useState('');
   const router = useRouter();
   const queryClient = useQueryClient();
+  const date = new Date();
 
   const handleClickEmotion = (emotion: EmotionValue) => {
     setEmotion(emotion);
+  };
+  const onInvalidateQueries = async () => {
+    await queryClient.invalidateQueries('couple_diary');
+    await queryClient.invalidateQueries('today');
+    await queryClient.invalidateQueries('couple');
+    await queryClient.invalidateQueries('coin');
+    await queryClient.invalidateQueries('stat');
   };
   const handleClickWrite = async () => {
     try {
@@ -33,15 +41,12 @@ const Write: NextPage = () => {
         predEmotion: emotion,
       };
       await writeDiary(diary);
-      await queryClient.invalidateQueries('couple_diary');
-      await queryClient.invalidateQueries('today');
-      await queryClient.invalidateQueries('couple');
+      await onInvalidateQueries();
       await router.push('/diary/complete');
     } catch (e) {
       console.log(e);
     }
   };
-  const date = new Date();
   return (
     <>
       {user.isLoading || (
