@@ -28,7 +28,7 @@ const ChartDiary: NextPage = () => {
       getCoupleDiaryByDuration(
         user.data!.coupleId,
         ToJavaLocaleDate(new Date(date.year, date.month - 1, 1)),
-        ToJavaLocaleDate(new Date(date.year, date.month + 1, 1))
+        ToJavaLocaleDate(new Date(date.year, date.month, 1))
       ),
     { enabled: user.data !== undefined, retry: 0 }
   );
