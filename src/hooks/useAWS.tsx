@@ -8,7 +8,7 @@ const useAWS = () => {
     region: 'ap-northeast-2',
   });
 
-  const upload = (file: File, user: number) => {
+  const upload = async (file: File, user: number) => {
     const uploadParams = {
       Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET!,
       Body: file,
