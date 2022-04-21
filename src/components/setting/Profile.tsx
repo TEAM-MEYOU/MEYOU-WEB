@@ -53,7 +53,7 @@ function Profile({ onClose }: Props) {
     const member: Partial<Member> = { ...user.data!.coupleInfo, nickname: nickName };
     try {
       if (image.file) {
-        aws.upload(image.file, user.data!.id);
+        await aws.upload(image.file, user.data!.coupleInfo!.id);
       }
       await updateMember(member);
       await queryClient.invalidateQueries('user');
