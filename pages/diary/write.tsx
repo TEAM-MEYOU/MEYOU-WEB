@@ -101,6 +101,11 @@ const Write: NextPage = () => {
                 selectedEmotion={emotion}
                 onClick={() => handleClickEmotion('NEUTRAL')}
               />
+              <EmotionImage
+                emotion={'DEPRESSED'}
+                selectedEmotion={emotion}
+                onClick={() => handleClickEmotion('DEPRESSED')}
+              />
               <EmotionImage emotion={'SAD'} selectedEmotion={emotion} onClick={() => handleClickEmotion('SAD')} />
               <EmotionImage emotion={'ANGRY'} selectedEmotion={emotion} onClick={() => handleClickEmotion('ANGRY')} />
             </div>
