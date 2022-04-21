@@ -4,7 +4,7 @@ import Button from '@components/Button';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
 
-type ChartPath = 'diary' | 'week-emotion' | 'month-emotion' | 'frequency' | 'long' | 'coin';
+type ChartPath = 'diary' | 'month-emotion' | 'frequency' | 'long' | 'coin';
 const Chart: NextPage = () => {
   const router = useRouter();
   const route = (path: ChartPath) => {
@@ -21,22 +21,13 @@ const Chart: NextPage = () => {
           다이어리 기록보기
         </IconWithText>
       </Button>
-      <Button iconButton={true} onClick={() => route('week-emotion')}>
-        <IconWithText
-          css={css`
-            cursor: pointer;
-          `}
-          src={'/icons/pie-chart.png'}>
-          이번주 감정 통계 보러가기
-        </IconWithText>
-      </Button>
       <Button iconButton={true} onClick={() => route('month-emotion')}>
         <IconWithText
           css={css`
             cursor: pointer;
           `}
           src={'/icons/pie-chart.png'}>
-          이번달 감정 통계 보러가기
+          달별 감정 통계 보러가기
         </IconWithText>
       </Button>
       <Button iconButton={true} onClick={() => route('frequency')}>

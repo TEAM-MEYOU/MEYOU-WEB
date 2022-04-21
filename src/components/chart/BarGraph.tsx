@@ -4,12 +4,12 @@ import Text from '@components/Text';
 import styled from '@emotion/styled';
 
 interface Props {
-  userId?: number;
-  ratio: number;
+  url: string;
+  ratio?: number;
   color: string;
 }
 
-const BarGraph = ({ ratio, color, userId }: Props) => {
+const BarGraph = ({ ratio = 0, color, url }: Props) => {
   return (
     <Box>
       <Image
@@ -18,7 +18,7 @@ const BarGraph = ({ ratio, color, userId }: Props) => {
         `}
         width={50}
         height={50}
-        src={userId ? '/icons/profile_mock_img_2.jpeg' : '/icons/user.jpeg'}
+        src={url}
         alt={'프로필 이미지'}
       />
       <div
@@ -29,7 +29,7 @@ const BarGraph = ({ ratio, color, userId }: Props) => {
           margin: 0 1rem;
         `}
       />
-      <Text>{ratio}</Text>
+      <Text>{ratio ? ratio : 0}</Text>
     </Box>
   );
 };

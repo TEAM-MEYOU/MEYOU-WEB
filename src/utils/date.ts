@@ -48,3 +48,8 @@ export const ToDiaryDateString = (date: string) => {
     return `${year}년 ${month}월 ${day}일`;
   }
 };
+
+export const ToStatDateString = (date: string) => {
+  const [year, month] = date.split('-').map(el => Number(el));
+  return `${year}년 ${month}월`;
+};

@@ -65,6 +65,7 @@ const Emotion = {
   Sad: 'SAD',
   Smile: 'HAPPY',
   Neutral: 'NEUTRAL',
+  Depressed: 'DEPRESSED',
 } as const;
 
 export type EmotionValue = typeof Emotion[keyof typeof Emotion];

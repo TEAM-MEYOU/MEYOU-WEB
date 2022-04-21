@@ -4,8 +4,14 @@ import styled from '@emotion/styled';
 import colors from '@constants/colors';
 import Text from '@components/Text';
 import { useEffect, useState } from 'react';
+import { Member } from '@apis/member';
 
-function Versus() {
+interface Props {
+  user: Member;
+  win: number;
+}
+
+function Versus({ user, win }: Props) {
   const [width, setWidth] = useState(150);
 
   useEffect(() => {
@@ -35,12 +41,12 @@ function Versus() {
         padding-bottom: 1rem;
       `}>
       <ImgBox>
-        <WinIcon src={'/icons/win.png'} alt={'승리 아이콘'} />
+        {win === 1 && <WinIcon src={'/icons/win.png'} alt={'승리 아이콘'} />}
         <Image
           radius={'0rem'}
           width={width}
           height={width}
-          src={'/icons/profile_mock_img_1.jpeg'}
+          src={user.imageUrl}
           alt={'프로필 이미지'}
           css={css`
             border-style: solid;
@@ -49,7 +55,7 @@ function Versus() {
               1;
           `}
         />
-        <Text>지현</Text>
+        <Text>{user.nickname}</Text>
       </ImgBox>
       <Image
         css={css`
@@ -61,6 +67,7 @@ function Versus() {
         alt={'프로필 이미지'}
       />
       <ImgBox>
+        {win === 2 && <WinIcon src={'/icons/win.png'} alt={'승리 아이콘'} />}
         <Image
           css={css`
             border: 3px solid ${colors.black};
@@ -68,10 +75,10 @@ function Versus() {
           radius={'0rem'}
           width={width}
           height={width}
-          src={'/icons/profile_mock_img_2.jpeg'}
+          src={user.coupleInfo!.imageUrl}
           alt={'프로필 이미지'}
         />
-        <Text>쪼</Text>
+        <Text>{user.coupleInfo?.nickname}</Text>
       </ImgBox>
     </div>
   );
