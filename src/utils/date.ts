@@ -13,8 +13,10 @@ export const ConvertMeYouDateString = (date: Date) => {
  * @constructor
  */
 export const DiffCoupleTime = (date: Date) => {
+  date.setHours(0);
   const current = new Date();
-  return Math.ceil((current.getTime() - date.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+  current.setHours(0);
+  return Math.ceil((current.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
 };
 
 /**
