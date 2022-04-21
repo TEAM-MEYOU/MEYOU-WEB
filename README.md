@@ -1,13 +1,13 @@
 <div align='center'>
   <img width="160" alt="스크린샷 2022-04-20 오전 11 16 58" src="https://user-images.githubusercontent.com/37062292/164476002-9c279c6b-ab03-461c-8816-7228a3214e3e.png">
   <h1>MeYou [FRONT END - WEB]</h1>
-  <span>요즘 커플앱 너무 심심하지 않으신가요? MeYou를 통해서 재밌는 커플 앱을 사용해 보세요!<span>
+  <span>요즘 커플앱 너무 심심하지 않으신가요? MeYou를 통해서 재밌는 커플 앱을 사용해 보세요!</span>
 </div>
     
 ## 바로가기 🔥
-**<span>MEYOU 서비스 페이지 👋 - <span> <a href="http://13.124.118.253:3000/" target="_blank">바로가기</a>**
+**<span>MEYOU 서비스 페이지 👋 - </span> <a href="http://13.124.118.253:3000/" target="_blank">바로가기</a>**
 <!--     
-**<span>MEYOU 기술 블로그 ⚒ - <span> <a href="" target="_blank">바로가기</a>**
+**<span>MEYOU 기술 블로그 ⚒ - </span> <a href="" target="_blank">바로가기</a>**
     
 - MEYOU를 진행하면서 학습한 내용들을 정리하여 작성한 블로그입니다. -->
     
