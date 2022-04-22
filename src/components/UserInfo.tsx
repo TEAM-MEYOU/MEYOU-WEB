@@ -44,24 +44,26 @@ function UserInfo() {
                 {user.data!.kakao}
               </Text>
             </div>
-            <div
-              css={css`
-                display: flex;
-                margin-top: 0.5rem;
-              `}>
-              <Text
+            {user.data.coupleInfo && (
+              <div
                 css={css`
-                  color: ${colors.grey500};
+                  display: flex;
+                  margin-top: 0.5rem;
                 `}>
-                연결된 상대방
-              </Text>
-              <Text
-                css={css`
-                  margin-left: auto;
-                `}>
-                {user.data!.coupleInfo!.kakao}
-              </Text>
-            </div>
+                <Text
+                  css={css`
+                    color: ${colors.grey500};
+                  `}>
+                  연결된 상대방
+                </Text>
+                <Text
+                  css={css`
+                    margin-left: auto;
+                  `}>
+                  {user.data!.coupleInfo.kakao}
+                </Text>
+              </div>
+            )}
           </div>
         </Container>
       )}
