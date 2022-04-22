@@ -58,3 +58,12 @@ export const updateCouple = async (couple: Couple) => {
   const response = await axios.put(API_URL, couple);
   return response.data;
 };
+
+/**
+ * 커플연결 해제 요청 API
+ * @param coupleId
+ */
+export const disconnectCouple = async (coupleId: number) => {
+  const response = await axios.get(`${API_URL}/decouple?coupleId=${coupleId}`);
+  return response.data;
+};

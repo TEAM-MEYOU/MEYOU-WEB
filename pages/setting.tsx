@@ -8,10 +8,13 @@ import { useState } from 'react';
 import CoupleData from '@components/setting/CoupleData';
 import { useRouter } from 'next/router';
 import UserInfo from '@components/UserInfo';
+import DisConnection from '@components/setting/DisConnection';
 
 const Setting: NextPage = () => {
   const [profile, setProfile] = useState(false);
   const [couple, setCouple] = useState(false);
+  const [disCouple, setDisCouple] = useState(false);
+  const [disMeyou, setDisMeyou] = useState(false);
   const router = useRouter();
 
   const handleClickLogOut = () => {
@@ -25,11 +28,13 @@ const Setting: NextPage = () => {
       <UserInfo />
       <SettingMenu title={'커플 정보 변경'} onClick={() => setCouple(true)} />
       <SettingMenu title={'상대방 프로필 변경'} onClick={() => setProfile(true)} />
-      <SettingMenu title={'커플 연결 해제'} warn={true} />
-      <SettingMenu title={'탈퇴하기'} warn={true} />
+      <SettingMenu title={'커플 연결 해제'} warn={true} onClick={() => setDisCouple(true)} />
+      <SettingMenu title={'탈퇴하기'} warn={true} onClick={() => setDisMeyou(true)} />
       <SettingMenu title={'로그아웃'} warn={true} onClick={handleClickLogOut} />
       {profile && <Profile onClose={() => setProfile(false)} />}
       {couple && <CoupleData onClose={() => setCouple(false)} />}
+      {disCouple && <DisConnection disconnection={'Couple'} onClose={() => setDisCouple(false)} />}
+      {disMeyou && <DisConnection disconnection={'Meyou'} onClose={() => setDisMeyou(false)} />}
     </>
   );
 };

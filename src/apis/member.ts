@@ -68,3 +68,13 @@ export const updateProfileImage = async (id: number, url: string) => {
   const response = await axios.get(`${API_URL}/profile?memberId=${id}&imageUrl=${url}`);
   return response.data;
 };
+
+/**
+ * 회원 탈퇴 요청 API
+ * 회원 탈퇴 -> 30일간 복구 가능
+ * @param id
+ */
+export const disconnectMember = async (id: number) => {
+  const response = await axios.get(`${API_URL}/unactive?memberId=${id}`);
+  return response.data;
+};
