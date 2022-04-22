@@ -34,8 +34,8 @@ const Long: NextPage = () => {
 
   useEffect(() => {
     if (myStat.isFetched && coupleStat.isFetched) {
-      const user = myStat.data?.diaryFreq ? myStat.data.diaryFreq : 0;
-      const couple = coupleStat.data?.diaryFreq ? coupleStat.data.diaryFreq : 0;
+      const user = myStat.data?.diaryLength ? myStat.data.diaryLength / myStat.data.diaryFreq : 0;
+      const couple = coupleStat.data?.diaryLength ? coupleStat.data.diaryLength / coupleStat.data.diaryFreq : 0;
       if (user > couple) setWin(1);
       else if (user < couple) setWin(2);
       else setWin(0);
