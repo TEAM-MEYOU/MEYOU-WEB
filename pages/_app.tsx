@@ -20,9 +20,14 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 
   const fetchUser = async () => {
-    const user: Member = await checkMember(window.localStorage.getItem('kakao')!);
-    queryClient.setQueryData('user', user);
-    onCheckValidUser(user);
+    try {
+      const user: Member = await checkMember(window.localStorage.getItem('kakao')!);
+      queryClient.setQueryData('user', user);
+      onCheckValidUser(user);
+    } catch (e) {
+      window.localStorage.clear();
+      router.push('/');
+    }
   };
 
   const onCheckValidUser = (user: Member) => {
