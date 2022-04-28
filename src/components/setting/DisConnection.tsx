@@ -55,8 +55,8 @@ function DisConnection({ disconnection, onClose }: Props) {
           try {
             await disconnectMember(user.data!.id);
             window.localStorage.clear();
-            await queryClient.invalidateQueries('user');
             await router.push('/');
+            await queryClient.invalidateQueries('user');
           } catch (e) {
             console.log(e);
           }
