@@ -19,7 +19,7 @@ const GettingStarted: NextPage = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const handleClickLinkShare = async () => {
-    const url = `https://meyou-web.vercel.app/connection?id=${user.data!.uniqueCode}`;
+    const url = `https://meyoudiary.com/connection?id=${user.data!.uniqueCode}`;
     if (typeof navigator.share !== 'undefined') {
       try {
         await navigator.share({
