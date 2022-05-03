@@ -7,6 +7,7 @@ import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { checkMember, Member } from '@apis/member';
+import MetaHead from '@components/MetaHead';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -53,6 +54,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
+        <MetaHead />
         <Layout>
           <Component {...pageProps} />
           <Navigation />
