@@ -5,7 +5,7 @@
 </div>
     
 ## 바로가기 🔥
-**<span>MEYOU 서비스 페이지 👋 - </span> <a href="http://13.124.118.253:3000/" target="_blank">바로가기</a>**
+**<span>MEYOU 서비스 페이지 👋 - </span> <a href="https://meyoudiary.com" target="_blank">바로가기</a>**
 <!--     
 **<span>MEYOU 기술 블로그 ⚒ - </span> <a href="" target="_blank">바로가기</a>**
     
