@@ -15,7 +15,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     () =>
       new QueryClient({
         defaultOptions: {
-          queries: { staleTime: Infinity, cacheTime: Infinity },
+          queries: { staleTime: 1000 * 60 * 5, cacheTime: 1000 * 60 * 5 },
         },
       })
   );
