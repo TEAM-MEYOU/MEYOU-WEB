@@ -39,8 +39,8 @@ const Connection: NextPage = () => {
     }
   };
   useEffect(() => {
-    id && fetchValidUser();
-  }, [id]);
+    id !== undefined && fetchValidUser();
+  }, [id, fetchValidUser]);
   return (
     <>
       <Container
