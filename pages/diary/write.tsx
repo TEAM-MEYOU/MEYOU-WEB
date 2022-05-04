@@ -98,7 +98,11 @@ const Write: NextPage = () => {
               `}>
               더 좋은 서비스를위해 MeYou에 감정이 제공됩니다.
             </Text>
-            <div>
+            <div
+              css={css`
+                display: flex;
+                flex-wrap: wrap;
+              `}>
               <EmotionImage emotion={'LOVE'} selectedEmotion={emotion} onClick={() => handleClickEmotion('LOVE')} />
               <EmotionImage emotion={'HAPPY'} selectedEmotion={emotion} onClick={() => handleClickEmotion('HAPPY')} />
               <EmotionImage
@@ -172,6 +176,7 @@ const EmotionImage = ({ emotion, selectedEmotion = emotion, onClick }: Props & C
         background-color: ${emotion === selectedEmotion ? colors.content200 : colors.background};
         padding: 10px;
         cursor: pointer;
+        margin-bottom: 10px;
         margin-right: 20px;
       `}
       onClick={onClick}
