@@ -1,6 +1,5 @@
 import Container from '@components/Container';
 import Text from '@components/Text';
-import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import colors from '@constants/colors';
 import Image from '@components/Image';
@@ -9,6 +8,7 @@ import { useQuery } from 'react-query';
 import { ToDiaryDateString } from '@utils/date';
 import useUser from '@hooks/useUser';
 import { useEffect, useState, memo } from 'react';
+import styled from '@emotion/styled';
 
 interface Props {
   coupleDiary: CoupleDiary;
@@ -23,6 +23,11 @@ function DiaryLog({ coupleDiary }: Props) {
   const [myDiary, setMyDiary] = useState<Diary>();
   const [partnerDiary, setPartnerDiary] = useState<Diary>();
   const [secret, setSecret] = useState(true);
+  const [viewMore, setViewMore] = useState(false);
+
+  const handleClickDiary = () => {
+    setViewMore(true);
+  };
 
   useEffect(() => {
     if (user.data && diary1.data && diary2.data !== null) {
@@ -51,11 +56,23 @@ function DiaryLog({ coupleDiary }: Props) {
         `}>
         {ToDiaryDateString(coupleDiary.writeTime)}
       </Text>
-      <DiaryLogItem diary={partnerDiary} profile={user.data!.coupleInfo!.imageUrl} secret={secret} />
-      <DiaryLogItem diary={myDiary} profile={user.data!.imageUrl} />
+      <DiaryLogItem
+        diary={partnerDiary}
+        profile={user.data!.coupleInfo!.imageUrl}
+        secret={secret}
+        viewMore={viewMore}
+      />
+      <DiaryLogItem diary={myDiary} profile={user.data!.imageUrl} viewMore={viewMore} />
+      {viewMore || <TextButton onClick={handleClickDiary}>자세히 보기</TextButton>}
     </Container>
   );
 }
+
+const TextButton = styled.button`
+  cursor: pointer;
+  font-size: 20px;
+  float: right;
+`;
 
 export default memo(DiaryLog);
 
@@ -74,39 +91,51 @@ interface DiaryLogItemProps {
   diary?: Diary;
   profile: string;
   secret?: boolean;
+  viewMore: boolean;
 }
 
 export const DiaryLogItem = memo(
-  ({ diary, profile, secret = false }: DiaryLogItemProps) => {
+  ({ diary, profile, viewMore, secret = false }: DiaryLogItemProps) => {
     return (
-      <Item>
-        <Image width={50} height={50} src={profile} alt={'프로필 이미지'} />
-        {diary && !secret ? (
-          <Image
-            css={css`
-              position: absolute;
-              left: 3.5rem;
-              bottom: -0.6rem;
-            `}
-            width={25}
-            height={25}
-            src={`/icons/emotions/${diary.predEmotion}.png`}
-            alt={'감정 아이콘'}
-          />
-        ) : (
-          <Image
-            css={css`
-              position: absolute;
-              left: 4.5rem;
-              top: -2rem;
-            `}
-            width={30}
-            height={30}
-            src={'/icons/ask_icon.png'}
-            alt={'미작성 아이콘'}
-            radius={'0'}
-          />
-        )}
+      <div
+        css={css`
+          display: flex;
+          align-items: ${viewMore ? 'initial' : 'center'};
+          margin-top: 45px;
+        `}>
+        <div
+          css={css`
+            position: relative;
+            height: 50px;
+          `}>
+          <Image width={50} height={50} src={profile} alt={'프로필 이미지'} />
+          {diary && !secret ? (
+            <Image
+              css={css`
+                position: absolute;
+                left: 3.5rem;
+                bottom: -0.6rem;
+              `}
+              width={25}
+              height={25}
+              src={`/icons/emotions/${diary.predEmotion}.png`}
+              alt={'감정 아이콘'}
+            />
+          ) : (
+            <Image
+              css={css`
+                position: absolute;
+                left: 4.5rem;
+                top: -2rem;
+              `}
+              width={30}
+              height={30}
+              src={'/icons/ask_icon.png'}
+              alt={'미작성 아이콘'}
+              radius={'0'}
+            />
+          )}
+        </div>
         {diary && secret && (
           <Text
             css={css`
@@ -120,12 +149,12 @@ export const DiaryLogItem = memo(
         {diary && !secret && (
           <Text
             css={css`
-              color: ${colors.content300};
+              color: ${colors.black};
               font-size: 2.3rem;
               margin-left: 3rem;
-              overflow: hidden;
-              white-space: nowrap;
-              text-overflow: ellipsis;
+              overflow: ${viewMore || 'hidden'};
+              white-space: ${viewMore || 'nowrap'};
+              text-overflow: ${viewMore || 'ellipsis'};
             `}>
             {diary.content}
           </Text>
@@ -140,23 +169,17 @@ export const DiaryLogItem = memo(
             아직 다이어리를 작성하지 않았어요!
           </Text>
         )}
-      </Item>
+      </div>
     );
   },
   (prevProps, nextProps) => {
     return (
       prevProps.diary === nextProps.diary &&
       prevProps.profile === nextProps.profile &&
-      prevProps.secret === nextProps.secret
+      prevProps.secret === nextProps.secret &&
+      prevProps.viewMore === nextProps.viewMore
     );
   }
 );
 
 DiaryLogItem.displayName = 'DiaryLogItem';
-
-const Item = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
-  margin-top: 45px;
-`;
