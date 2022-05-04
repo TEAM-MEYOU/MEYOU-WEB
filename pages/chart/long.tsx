@@ -43,7 +43,7 @@ const Long: NextPage = () => {
   }, [myStat, coupleStat]);
   return (
     <>
-      <Header onClick={() => router.back()}>누가 더 다이어를 길게 썼을까요?</Header>
+      <Header onClick={() => router.back()}>누가 더 다이어리를 길게 썼을까요?</Header>
       {user.isFetched && myStat.isFetched && coupleStat.isFetched ? (
         <Container>
           <Versus user={user.data!} win={win} />

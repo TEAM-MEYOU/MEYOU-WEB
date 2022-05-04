@@ -44,7 +44,7 @@ const Frequency: NextPage = () => {
 
   return (
     <>
-      <Header onClick={() => router.back()}>누가 더 다이어를 자주 썼을까요?</Header>
+      <Header onClick={() => router.back()}>누가 더 다이어리를 자주 썼을까요?</Header>
       {user.isFetched && myStat.isFetched && coupleStat.isFetched ? (
         <Container>
           <Versus user={user.data!} win={win} />
