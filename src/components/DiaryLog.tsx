@@ -56,13 +56,13 @@ function DiaryLog({ coupleDiary }: Props) {
         `}>
         {ToDiaryDateString(coupleDiary.writeTime)}
       </Text>
+      <DiaryLogItem diary={myDiary} profile={user.data!.imageUrl} viewMore={viewMore} />
       <DiaryLogItem
         diary={partnerDiary}
         profile={user.data!.coupleInfo!.imageUrl}
         secret={secret}
         viewMore={viewMore}
       />
-      <DiaryLogItem diary={myDiary} profile={user.data!.imageUrl} viewMore={viewMore} />
       {viewMore || <TextButton onClick={handleClickDiary}>자세히 보기</TextButton>}
     </Container>
   );
