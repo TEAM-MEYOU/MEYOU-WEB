@@ -30,6 +30,11 @@ function DiaryLog({ coupleDiary }: Props) {
   };
 
   useEffect(() => {
+    setSecret(true);
+    setViewMore(false);
+  }, [coupleDiary]);
+
+  useEffect(() => {
     if (user.data && diary1.data && diary2.data !== null) {
       if (diary1.data.memberId === user.data.id || diary2.data?.memberId === user.data.id) {
         setSecret(false);
@@ -74,7 +79,12 @@ const TextButton = styled.button`
   float: right;
 `;
 
-export default memo(DiaryLog);
+export default memo(DiaryLog, (prevProps, nextProps) => {
+  return (
+    prevProps.coupleDiary.writeTime === nextProps.coupleDiary.writeTime &&
+    prevProps.coupleDiary.id === nextProps.coupleDiary.id
+  );
+});
 
 const Emotion = {
   Love: 'LOVE',
@@ -174,7 +184,7 @@ export const DiaryLogItem = memo(
   },
   (prevProps, nextProps) => {
     return (
-      prevProps.diary === nextProps.diary &&
+      prevProps.diary?.writeTime === nextProps.diary?.writeTime &&
       prevProps.profile === nextProps.profile &&
       prevProps.secret === nextProps.secret &&
       prevProps.viewMore === nextProps.viewMore
