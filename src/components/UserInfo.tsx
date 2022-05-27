@@ -17,7 +17,6 @@ function UserInfo() {
               display: flex;
               flex-direction: column;
               align-items: center;
-              margin-right: 1.5rem;
             `}>
             <Image width={60} height={60} src={user.data!.imageUrl} alt={'프로필 이미지'} />
             <Text>{user.data!.nickname}</Text>
