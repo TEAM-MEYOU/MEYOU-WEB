@@ -21,6 +21,8 @@ const useAWS = () => {
       if (!err) {
         const url = `https://${process.env.NEXT_PUBLIC_AWS_S3}/profile/${user}/profile.${file.type.split('/')[1]}`;
         await updateProfileImage(user, url);
+      } else {
+        console.log(err);
       }
     });
   };

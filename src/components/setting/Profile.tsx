@@ -2,7 +2,6 @@ import Modal from '@components/Modal';
 import Text from '@components/Text';
 import { css } from '@emotion/react';
 import colors from '@constants/colors';
-import Image from '@components/Image';
 import styled from '@emotion/styled';
 import Button from '@components/Button';
 import { ChangeEvent, useState } from 'react';
@@ -10,12 +9,13 @@ import useUser from '@hooks/useUser';
 import { Member, updateMember } from '@apis/member';
 import { useQueryClient } from 'react-query';
 import useAWS from '@hooks/useAWS';
+import { ResizeImage } from '@utils/fileUtil';
 
 interface Props {
   onClose: () => void;
 }
 
-interface IImage {
+export interface IImage {
   file: File | null;
   url: string;
 }
@@ -45,8 +45,7 @@ function Profile({ onClose }: Props) {
       return;
     }
     const file = input.files[0];
-    const url = URL.createObjectURL(file);
-    setImage({ file: file, url: url });
+    ResizeImage(file, 300, 300, setImage);
   };
 
   const handleClickButton = async () => {
@@ -64,7 +63,7 @@ function Profile({ onClose }: Props) {
   };
 
   return (
-    <Modal onClose={onClose} title="프로필   설정하기">
+    <Modal onClose={onClose} title="프로필 설정하기">
       <Text
         css={css`
           display: block;
@@ -81,11 +80,13 @@ function Profile({ onClose }: Props) {
         `}>
         <ProfileInput onChange={onChangeImage} id={'profile'} type="file" accept={'image/jpeg, image/png'} />
         <label htmlFor={'profile'}>
-          <Image
+          <img
             css={css`
               margin-bottom: 1.5rem;
               cursor: pointer;
               border: 1px solid ${colors.grey100};
+              border-radius: 50%;
+              object-fit: cover;
             `}
             width={80}
             height={80}
