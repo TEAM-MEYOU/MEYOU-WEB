@@ -10,6 +10,7 @@ function MetaHead() {
       <meta property="og:title" key="ogtitle" content="미유 다이어리" />
       <meta property="og:description" key="ogdesc" content="서로의 감정을 분석하는 커플 다이어리 애플리케이션" />
       <meta property="og:url" key="ogurl" content="https://meyoudiary.com" />
+      <link rel={'icon'} href={'/favicon/favicon-96x96.png'} />
     </Head>
   );
 }
