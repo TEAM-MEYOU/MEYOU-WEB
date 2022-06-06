@@ -8,14 +8,14 @@ import colors from '@constants/colors';
 import Button from '@components/Button';
 import { ComponentProps, useState } from 'react';
 import IconWithText from '@components/IconWithText';
-import useUser from '@hooks/useUser';
 import { WriteDiary, writeDiary } from '@apis/diary';
 import { EmotionValue } from '@components/DiaryLog';
 import { useRouter } from 'next/router';
 import { useQueryClient } from 'react-query';
+import { useFetchUser } from '@hooks/queries';
 
 const Write: NextPage = () => {
-  const user = useUser();
+  const fetchUser = useFetchUser();
   const [emotion, setEmotion] = useState<EmotionValue>('LOVE');
   const [content, setContent] = useState('');
   const router = useRouter();
@@ -35,7 +35,7 @@ const Write: NextPage = () => {
   const handleClickWrite = async () => {
     try {
       const diary: WriteDiary = {
-        memberId: user.data!.id,
+        memberId: fetchUser.data!.id,
         content: content,
         userEmotion: emotion,
         predEmotion: emotion,
@@ -49,7 +49,7 @@ const Write: NextPage = () => {
   };
   return (
     <>
-      {user.isLoading || (
+      {fetchUser.isLoading || (
         <>
           <Container
             css={css`
@@ -61,7 +61,7 @@ const Write: NextPage = () => {
               css={css`
                 font-size: 2.6rem;
               `}>
-              {user.data?.nickname}의 {date.getMonth() + 1}월 {date.getDate()}일 다이어리
+              {fetchUser.data?.nickname}의 {date.getMonth() + 1}월 {date.getDate()}일 다이어리
             </Text>
             <TextArea
               placeholder={'오늘의 다이어리를 작성해 보세요'}

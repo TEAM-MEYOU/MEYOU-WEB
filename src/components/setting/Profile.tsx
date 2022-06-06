@@ -5,11 +5,11 @@ import colors from '@constants/colors';
 import styled from '@emotion/styled';
 import Button from '@components/Button';
 import { ChangeEvent, useState } from 'react';
-import useUser from '@hooks/useUser';
 import { Member, updateMember } from '@apis/member';
 import { useQueryClient } from 'react-query';
 import useAWS from '@hooks/useAWS';
 import { ResizeImage } from '@utils/fileUtil';
+import { useFetchUser } from '@hooks/queries';
 
 interface Props {
   onClose: () => void;
@@ -21,19 +21,19 @@ export interface IImage {
 }
 
 function Profile({ onClose }: Props) {
-  const user = useUser();
+  const fetchUser = useFetchUser();
   const aws = useAWS();
   const queryClient = useQueryClient();
   const [image, setImage] = useState<IImage>(() => {
-    if (user.data) {
-      return { file: null, url: user.data.coupleInfo!.imageUrl };
+    if (fetchUser.data) {
+      return { file: null, url: fetchUser.data.coupleInfo!.imageUrl };
     } else {
       return { file: null, url: '/icons/user.jpeg' };
     }
   });
   const [nickName, setNickName] = useState(() => {
-    if (user.data) {
-      return user.data.coupleInfo!.nickname ? user.data.coupleInfo!.nickname : '';
+    if (fetchUser.data) {
+      return fetchUser.data.coupleInfo!.nickname ? fetchUser.data.coupleInfo!.nickname : '';
     } else {
       return '';
     }
@@ -49,10 +49,10 @@ function Profile({ onClose }: Props) {
   };
 
   const handleClickButton = async () => {
-    const member: Partial<Member> = { ...user.data!.coupleInfo, nickname: nickName };
+    const member: Partial<Member> = { ...fetchUser.data!.coupleInfo, nickname: nickName };
     try {
       if (image.file) {
-        await aws.upload(image.file, user.data!.coupleInfo!.id);
+        await aws.upload(image.file, fetchUser.data!.coupleInfo!.id);
       }
       await updateMember(member);
       await queryClient.invalidateQueries('user');

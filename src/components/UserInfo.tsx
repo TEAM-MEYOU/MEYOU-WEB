@@ -3,13 +3,13 @@ import { css } from '@emotion/react';
 import Image from '@components/Image';
 import Text from '@components/Text';
 import colors from '@constants/colors';
-import useUser from '@hooks/useUser';
+import { useFetchUser } from '@hooks/queries';
 
 function UserInfo() {
-  const user = useUser();
+  const fetchUser = useFetchUser();
   return (
     <>
-      {user.data && (
+      {fetchUser.data && (
         <Container>
           <Text>내 정보</Text>
           <div
@@ -18,8 +18,8 @@ function UserInfo() {
               flex-direction: column;
               align-items: center;
             `}>
-            <Image width={60} height={60} src={user.data!.imageUrl} alt={'프로필 이미지'} />
-            <Text>{user.data!.nickname}</Text>
+            <Image width={60} height={60} src={fetchUser.data!.imageUrl} alt={'프로필 이미지'} />
+            <Text>{fetchUser.data!.nickname}</Text>
           </div>
           <div
             css={css`
@@ -40,10 +40,10 @@ function UserInfo() {
                 css={css`
                   margin-left: auto;
                 `}>
-                {user.data!.kakao}
+                {fetchUser.data!.kakao}
               </Text>
             </div>
-            {user.data.coupleInfo && (
+            {fetchUser.data.coupleInfo && (
               <div
                 css={css`
                   display: flex;
@@ -59,7 +59,7 @@ function UserInfo() {
                   css={css`
                     margin-left: auto;
                   `}>
-                  {user.data!.coupleInfo.kakao}
+                  {fetchUser.data!.coupleInfo.kakao}
                 </Text>
               </div>
             )}

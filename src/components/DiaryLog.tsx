@@ -3,23 +3,20 @@ import Text from '@components/Text';
 import { css } from '@emotion/react';
 import colors from '@constants/colors';
 import Image from '@components/Image';
-import { CoupleDiary, Diary, getDiaryById } from '@apis/diary';
-import { useQuery } from 'react-query';
+import { CoupleDiary, Diary } from '@apis/diary';
 import { ToDiaryDateString } from '@utils/date';
-import useUser from '@hooks/useUser';
 import { useEffect, useState, memo } from 'react';
 import styled from '@emotion/styled';
+import { useFetchDiaryById, useFetchUser } from '@hooks/queries';
 
 interface Props {
   coupleDiary: CoupleDiary;
 }
 
 function DiaryLog({ coupleDiary }: Props) {
-  const user = useUser();
-  const diary1 = useQuery<Diary>(['diary', coupleDiary.diary1], () => getDiaryById(coupleDiary.diary1));
-  const diary2 = useQuery<Diary>(['diary', coupleDiary.diary2], () => getDiaryById(coupleDiary.diary2!), {
-    enabled: coupleDiary.diary2 !== null,
-  });
+  const fetchUser = useFetchUser();
+  const fetchDiary1 = useFetchDiaryById(coupleDiary.diary1);
+  const fetchDiary2 = useFetchDiaryById(coupleDiary.diary2);
   const [myDiary, setMyDiary] = useState<Diary>();
   const [partnerDiary, setPartnerDiary] = useState<Diary>();
   const [secret, setSecret] = useState(true);
@@ -35,21 +32,21 @@ function DiaryLog({ coupleDiary }: Props) {
   }, [coupleDiary]);
 
   useEffect(() => {
-    if (user.data && diary1.data && diary2.data !== null) {
-      if (diary1.data.memberId === user.data.id || diary2.data?.memberId === user.data.id) {
+    if (fetchUser.data && fetchDiary1.data && fetchDiary2.data !== null) {
+      if (fetchDiary1.data.memberId === fetchUser.data.id || fetchDiary2.data?.memberId === fetchUser.data.id) {
         setSecret(false);
       }
     }
-    if (diary1.data && user.data) {
-      if (user.data.id === diary1.data.memberId) {
-        setMyDiary(diary1.data);
-        setPartnerDiary(diary2.data);
+    if (fetchDiary1.data && fetchUser.data) {
+      if (fetchUser.data.id === fetchDiary1.data.memberId) {
+        setMyDiary(fetchDiary1.data);
+        setPartnerDiary(fetchDiary2.data);
       } else {
-        setMyDiary(diary2.data);
-        setPartnerDiary(diary1.data);
+        setMyDiary(fetchDiary2.data);
+        setPartnerDiary(fetchDiary1.data);
       }
     }
-  }, [diary1, diary2, user.data]);
+  }, [fetchDiary1, fetchDiary2, fetchUser.data]);
   return (
     <Container
       css={css`
@@ -61,10 +58,10 @@ function DiaryLog({ coupleDiary }: Props) {
         `}>
         {ToDiaryDateString(coupleDiary.writeTime)}
       </Text>
-      <DiaryLogItem diary={myDiary} profile={user.data!.imageUrl} viewMore={viewMore} />
+      <DiaryLogItem diary={myDiary} profile={fetchUser.data!.imageUrl} viewMore={viewMore} />
       <DiaryLogItem
         diary={partnerDiary}
-        profile={user.data!.coupleInfo!.imageUrl}
+        profile={fetchUser.data!.coupleInfo!.imageUrl}
         secret={secret}
         viewMore={viewMore}
       />

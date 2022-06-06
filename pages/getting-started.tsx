@@ -7,19 +7,19 @@ import IconWithText from '@components/IconWithText';
 import Button from '@components/Button';
 import { useEffect, useState } from 'react';
 import AuthCode from '@components/AuthCode';
-import useUser from '@hooks/useUser';
 import { getMember, Member } from '@apis/member';
 import { useRouter } from 'next/router';
 import { useQueryClient } from 'react-query';
+import { useFetchUser } from '@hooks/queries';
 
 const GettingStarted: NextPage = () => {
-  const user = useUser();
+  const fetchUser = useFetchUser();
   const [modal, setModal] = useState(false);
   const [connectModal, setConnectModal] = useState(false);
   const router = useRouter();
   const queryClient = useQueryClient();
   const handleClickLinkShare = async () => {
-    const url = `https://meyoudiary.com/connection?id=${user.data!.uniqueCode}`;
+    const url = `https://meyoudiary.com/connection?id=${fetchUser.data!.uniqueCode}`;
     if (typeof navigator.share !== 'undefined') {
       try {
         await navigator.share({
@@ -41,7 +41,7 @@ const GettingStarted: NextPage = () => {
   };
   const handleClickCopyId = async () => {
     try {
-      await navigator.clipboard.writeText(user.data!.uniqueCode);
+      await navigator.clipboard.writeText(fetchUser.data!.uniqueCode);
       alert('내 ID가 복사되었습니다.');
     } catch (e) {
       console.log(e);
@@ -49,11 +49,11 @@ const GettingStarted: NextPage = () => {
   };
 
   useEffect(() => {
-    if (user.data) {
-      user.data.coupleInfo && router.push('/home');
+    if (fetchUser.data) {
+      fetchUser.data.coupleInfo && router.push('/home');
     }
     const falling = setInterval(async () => {
-      const response: Member = await getMember(user.data!.id);
+      const response: Member = await getMember(fetchUser.data!.id);
       if (response.coupleId) {
         await queryClient.invalidateQueries('user');
         await router.push('/home');
@@ -61,7 +61,7 @@ const GettingStarted: NextPage = () => {
     }, 6000);
 
     return () => clearInterval(falling);
-  }, [user.data, router, queryClient]);
+  }, [fetchUser.data, router, queryClient]);
 
   return (
     <>
@@ -84,7 +84,7 @@ const GettingStarted: NextPage = () => {
           css={css`
             text-align: center;
             font-size: 2.5rem;
-          `}>{`안녕하세요! ${user.data?.uniqueCode}님\n 아직 상대방과 연결되지 않았어요!`}</Text>
+          `}>{`안녕하세요! ${fetchUser.data?.uniqueCode}님\n 아직 상대방과 연결되지 않았어요!`}</Text>
       </Container>
       <Button iconButton={true} onClick={handleClickLinkShare}>
         <IconWithText

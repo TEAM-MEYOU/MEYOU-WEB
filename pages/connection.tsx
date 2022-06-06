@@ -7,14 +7,14 @@ import { css } from '@emotion/react';
 import IconWithText from '@components/IconWithText';
 import Lottie from '@components/Lottie';
 import { useEffect, useState } from 'react';
-import useUser from '@hooks/useUser';
 import { connectCouple } from '@apis/couple';
 import { getMemberByUniqueCode, Member } from '@apis/member';
 import { useQueryClient } from 'react-query';
+import { useFetchUser } from '@hooks/queries';
 
 const Connection: NextPage = () => {
   const router = useRouter();
-  const user = useUser();
+  const fetchUser = useFetchUser();
   const { id } = router.query;
   const [loading, setLoading] = useState(false);
   const [kakao, setKakao] = useState('');
@@ -22,7 +22,7 @@ const Connection: NextPage = () => {
 
   const handleClickConnect = async () => {
     setLoading(true);
-    await connectCouple(id as string, user.data!.uniqueCode);
+    await connectCouple(id as string, fetchUser.data!.uniqueCode);
     await queryClient.invalidateQueries('user');
     setTimeout(() => {
       router.push('/home');

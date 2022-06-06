@@ -4,13 +4,12 @@ import { useRouter } from 'next/router';
 import Text from '@components/Text';
 import ColumnList from '@components/ColumnList';
 import { css } from '@emotion/react';
-import { useQuery } from 'react-query';
-import { CoinGainHash, CoinLog, getCoinLog } from '@apis/coin';
-import useUser from '@hooks/useUser';
+import { CoinGainHash, CoinLog } from '@apis/coin';
 import { ToJavaLocaleDate } from '@utils/date';
 import colors from '@constants/colors';
 import Image from '@components/Image';
 import { memo } from 'react';
+import { useFetchCoinLog, useFetchUser } from '@hooks/queries';
 
 const todayDate = new Date();
 const today = ToJavaLocaleDate(todayDate);
@@ -20,19 +19,13 @@ const monthAgo = ToJavaLocaleDate(monthAgoDate);
 
 const Coin: NextPage = () => {
   const router = useRouter();
-  const user = useUser();
-  const coinLog = useQuery<Array<CoinLog>>(
-    ['coin', monthAgo, today],
-    () => getCoinLog(user.data!.coupleId, monthAgo, today),
-    {
-      enabled: user.data !== undefined,
-    }
-  );
+  const fetchUser = useFetchUser();
+  const fetchCoinLog = useFetchCoinLog(monthAgo, today, fetchUser.data?.coupleId);
   return (
     <>
       <Header onClick={() => router.back()}>코인 사용 기록</Header>
       <ColumnList>
-        {coinLog.data?.map(log => (
+        {fetchCoinLog.data?.map(log => (
           <CoinLogItem log={log} key={log.id} />
         ))}
       </ColumnList>

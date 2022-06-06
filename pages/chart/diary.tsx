@@ -3,14 +3,13 @@ import Header from '@components/Header';
 import Calendar, { DiaryDate } from '@components/Calendar';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
-import { CoupleDiary, getCoupleDiaryByDuration } from '@apis/diary';
-import useUser from '@hooks/useUser';
+import { CoupleDiary } from '@apis/diary';
 import { ToJavaLocaleDate } from '@utils/date';
 import Container from '@components/Container';
 import DiaryLog from '@components/DiaryLog';
 import Text from '@components/Text';
 import { css } from '@emotion/react';
+import { useFetchDiaryByDuration, useFetchUser } from '@hooks/queries';
 
 const initDate: DiaryDate = {
   year: new Date().getFullYear(),
@@ -19,34 +18,29 @@ const initDate: DiaryDate = {
 };
 
 const ChartDiary: NextPage = () => {
-  const user = useUser();
+  const fetchUser = useFetchUser();
   const router = useRouter();
   const [date, setDate] = useState(initDate);
-  const coupleDiaryLog = useQuery<Array<CoupleDiary>>(
-    ['couple_diary', date.year, date.month],
-    () =>
-      getCoupleDiaryByDuration(
-        user.data!.coupleId,
-        ToJavaLocaleDate(new Date(date.year, date.month - 1, 1)),
-        ToJavaLocaleDate(new Date(date.year, date.month, 1))
-      ),
-    { enabled: user.data !== undefined, retry: 0 }
+  const fetchCoupleDiary = useFetchDiaryByDuration(
+    ToJavaLocaleDate(new Date(date.year, date.month - 1, 1)),
+    ToJavaLocaleDate(new Date(date.year, date.month, 1)),
+    fetchUser.data?.coupleId
   );
   const [diaryDate, setDiaryDate] = useState<Array<number>>([]);
   const [coupleDiary, setCoupleDiary] = useState<CoupleDiary | null>(null);
 
   useEffect(() => {
-    if (coupleDiaryLog.data) {
+    if (fetchCoupleDiary.data) {
       const temp: Array<number> = [];
-      coupleDiaryLog.data.map(coupleDiary => temp.push(Number(coupleDiary.writeTime.split('-')[2])));
+      fetchCoupleDiary.data.map(coupleDiary => temp.push(Number(coupleDiary.writeTime.split('-')[2])));
       setDiaryDate(temp);
     }
-  }, [coupleDiaryLog.data]);
+  }, [fetchCoupleDiary.data]);
 
   useEffect(() => {
     let update = false;
-    if (coupleDiaryLog.data) {
-      for (const item of coupleDiaryLog.data) {
+    if (fetchCoupleDiary.data) {
+      for (const item of fetchCoupleDiary.data) {
         if (item.writeTime === ToJavaLocaleDate(new Date(date.year, date.month - 1, date.day))) {
           setCoupleDiary(item);
           update = true;
@@ -57,7 +51,7 @@ const ChartDiary: NextPage = () => {
         setCoupleDiary(null);
       }
     }
-  }, [date, coupleDiaryLog.data]);
+  }, [date, fetchCoupleDiary.data]);
 
   return (
     <>
