@@ -3,25 +3,20 @@ import Image from '@components/Image';
 import Text from '@components/Text';
 import colors from '@constants/colors';
 import Container from '@components/Container';
-import useUser from '@hooks/useUser';
 import styled from '@emotion/styled';
-import { useQuery } from 'react-query';
-import { Couple, getCouple } from '@apis/couple';
 import Button from '@components/Button';
 import CoupleData from '@components/setting/CoupleData';
 import { useState } from 'react';
 import { ConvertMeYouDateString, DiffCoupleTime } from '@utils/date';
+import { useFetchCouple, useFetchUser } from '@hooks/queries';
 
 function CoupleInfo() {
-  const user = useUser();
-  const couple = useQuery<Couple>('couple', () => getCouple(user.data!.coupleId), {
-    enabled: user.data !== undefined && user.data.coupleId !== null,
-    retry: 0,
-  });
+  const fetchUser = useFetchUser();
+  const fetchCouple = useFetchCouple(fetchUser.data?.coupleId);
   const [modal, setModal] = useState(false);
   return (
     <>
-      {user.data && couple.data && (
+      {fetchUser.data && fetchCouple.data && (
         <Container>
           <div
             css={css`
@@ -29,23 +24,23 @@ function CoupleInfo() {
               justify-content: space-between;
             `}>
             <DIV>
-              <Image css={css``} width={60} height={60} src={user.data!.imageUrl} alt={'프로필이미지'} />
-              <Text>{user.data.nickname}</Text>
+              <Image css={css``} width={60} height={60} src={fetchUser.data!.imageUrl} alt={'프로필이미지'} />
+              <Text>{fetchUser.data.nickname}</Text>
             </DIV>
-            {couple.data.coupleStart ? (
+            {fetchCouple.data.coupleStart ? (
               <DIV>
                 <Text
                   css={css`
                     font-size: 3rem;
                   `}>
-                  {ConvertMeYouDateString(new Date(couple.data.coupleStart))} ~
+                  {ConvertMeYouDateString(new Date(fetchCouple.data.coupleStart))} ~
                 </Text>
                 <Text
                   css={css`
                     font-size: 3rem;
                     color: ${colors.content300};
                   `}>
-                  D+ {DiffCoupleTime(new Date(couple.data.coupleStart))}일째
+                  D+ {DiffCoupleTime(new Date(fetchCouple.data.coupleStart))}일째
                 </Text>
                 <Text
                   css={css`
@@ -63,8 +58,14 @@ function CoupleInfo() {
               </DIV>
             )}
             <DIV>
-              <Image css={css``} width={60} height={60} src={user.data!.coupleInfo!.imageUrl} alt={'프로필이미지'} />
-              <Text>{user.data.coupleInfo!.nickname}</Text>
+              <Image
+                css={css``}
+                width={60}
+                height={60}
+                src={fetchUser.data!.coupleInfo!.imageUrl}
+                alt={'프로필이미지'}
+              />
+              <Text>{fetchUser.data.coupleInfo!.nickname}</Text>
             </DIV>
           </div>
           <div
@@ -87,7 +88,7 @@ function CoupleInfo() {
               css={css`
                 font-size: 2.5rem;
               `}>
-              {couple.data.coin}
+              {fetchCouple.data.coin}
             </Text>
           </div>
         </Container>

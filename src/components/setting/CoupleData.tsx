@@ -4,26 +4,23 @@ import styled from '@emotion/styled';
 import colors from '@constants/colors';
 import { css } from '@emotion/react';
 import Button from '@components/Button';
-import useUser from '@hooks/useUser';
-import { useQuery, useQueryClient } from 'react-query';
-import { Couple, getCouple, updateCouple } from '@apis/couple';
+import { useQueryClient } from 'react-query';
+import { updateCouple } from '@apis/couple';
 import { useState } from 'react';
 import { ConvertMeYouDateString } from '@utils/date';
+import { useFetchCouple, useFetchUser } from '@hooks/queries';
 
 interface Props {
   onClose: () => void;
 }
 
 function CoupleData({ onClose }: Props) {
-  const user = useUser();
   const queryClient = useQueryClient();
-  const couple = useQuery<Couple>('couple', () => getCouple(user.data!.coupleId), {
-    enabled: user.data !== undefined,
-    retry: 0,
-  });
+  const fetchUser = useFetchUser();
+  const fetchCouple = useFetchCouple(fetchUser.data?.coupleId);
   const [date, setDate] = useState(() => {
-    if (couple.data) {
-      return couple.data.coupleStart ? ConvertMeYouDateString(new Date(couple.data.coupleStart)) : '';
+    if (fetchCouple.data) {
+      return fetchCouple.data.coupleStart ? ConvertMeYouDateString(new Date(fetchCouple.data.coupleStart)) : '';
     } else {
       return '';
     }
@@ -35,7 +32,7 @@ function CoupleData({ onClose }: Props) {
       if (isNaN(saveDate.valueOf())) {
         alert('올바르지 않은 입력입니다.');
       }
-      await updateCouple({ ...couple.data!, coupleStart: saveDate });
+      await updateCouple({ ...fetchCouple.data!, coupleStart: saveDate });
       await queryClient.invalidateQueries('couple');
       onClose();
     } catch (e) {

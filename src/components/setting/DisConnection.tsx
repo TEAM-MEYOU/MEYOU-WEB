@@ -5,11 +5,11 @@ import Button from '@components/Button';
 import { useState } from 'react';
 import { css } from '@emotion/react';
 import colors from '@constants/colors';
-import useUser from '@hooks/useUser';
 import { disconnectCouple } from '@apis/couple';
 import { useRouter } from 'next/router';
 import { useQueryClient } from 'react-query';
 import { disconnectMember } from '@apis/member';
+import { useFetchUser } from '@hooks/queries';
 
 const DisconnectionType = {
   COUPLE: 'Couple',
@@ -25,7 +25,7 @@ interface Props {
 
 function DisConnection({ disconnection, onClose }: Props) {
   const [input, setInput] = useState('');
-  const user = useUser();
+  const fetchUser = useFetchUser();
   const router = useRouter();
   const queryClient = useQueryClient();
   const handleClickDisconnection = async () => {
@@ -33,11 +33,11 @@ function DisConnection({ disconnection, onClose }: Props) {
       if (input !== '연결해제') {
         alert('입력값이 일치하지 않습니다.');
       } else {
-        if (!user.data?.coupleId) {
+        if (!fetchUser.data?.coupleId) {
           alert('현재 커플연결상태가 아닙니다.');
         } else {
           try {
-            await disconnectCouple(user.data.coupleId);
+            await disconnectCouple(fetchUser.data.coupleId);
             await queryClient.invalidateQueries('user');
             await router.push('/getting-started');
           } catch (e) {
@@ -49,11 +49,11 @@ function DisConnection({ disconnection, onClose }: Props) {
       if (input !== '탈퇴') {
         alert('입력값이 일치하지 않습니다.');
       } else {
-        if (user.data?.coupleId) {
+        if (fetchUser.data?.coupleId) {
           alert('커플연결 해제전에는 탈퇴하실 수 없습니다.');
         } else {
           try {
-            await disconnectMember(user.data!.id);
+            await disconnectMember(fetchUser.data!.id);
             window.localStorage.clear();
             await router.push('/');
             await queryClient.invalidateQueries('user');

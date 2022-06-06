@@ -6,31 +6,21 @@ import Container from '@components/Container';
 import { css } from '@emotion/react';
 import Text from '@components/Text';
 import EmotionStatistics from '@components/chart/EmotionStatistics';
-import useUser from '@hooks/useUser';
-import { useQuery } from 'react-query';
-import { getStat, Stat } from '@apis/stat';
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import { ToJavaLocaleDate, ToStatDateString } from '@utils/date';
+import { useFetchStat, useFetchUser } from '@hooks/queries';
 
 const MonthEmotion: NextPage = () => {
   const router = useRouter();
-  const user = useUser();
+  const fetchUser = useFetchUser();
   const [date, setDate] = useState(() => {
     const date = new Date();
     date.setDate(1);
     return ToJavaLocaleDate(date);
   });
-  const myStat = useQuery<Stat>(['stat', user.data?.id, date], () => getStat(user.data!.id, date), {
-    enabled: user.data !== undefined,
-  });
-  const coupleStat = useQuery<Stat>(
-    ['stat', user.data?.coupleInfo?.id, date],
-    () => getStat(user.data!.coupleInfo!.id, date),
-    {
-      enabled: user.data !== undefined,
-    }
-  );
+  const fetchMemberStat = useFetchStat(date, fetchUser.data?.id);
+  const fetchCoupleStat = useFetchStat(date, fetchUser.data?.coupleInfo?.id);
 
   const handleClickArrow = (change: number) => {
     const _date = new Date(date);
@@ -57,19 +47,23 @@ const MonthEmotion: NextPage = () => {
         </Text>
         <Img src={'/icons/right.png'} alt={'오른쪽'} onClick={() => handleClickArrow(1)} />
       </Container>
-      {myStat.isFetched && coupleStat.isFetched ? (
+      {fetchMemberStat.isFetched && fetchCoupleStat.isFetched ? (
         <>
           <Container
             css={css`
               margin-bottom: 2rem;
             `}>
-            <EmotionStatistics nickName={user.data!.nickname} url={user.data!.imageUrl} stat={myStat.data} />
+            <EmotionStatistics
+              nickName={fetchUser.data!.nickname}
+              url={fetchUser.data!.imageUrl}
+              stat={fetchMemberStat.data}
+            />
           </Container>
           <Container>
             <EmotionStatistics
-              nickName={user.data!.coupleInfo!.nickname}
-              url={user.data!.coupleInfo!.imageUrl}
-              stat={coupleStat.data}
+              nickName={fetchUser.data!.coupleInfo!.nickname}
+              url={fetchUser.data!.coupleInfo!.imageUrl}
+              stat={fetchCoupleStat.data}
             />
           </Container>
         </>
